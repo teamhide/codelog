@@ -15,6 +15,7 @@ export default {
 <style scoped>
 .footer {
   padding-top: 20px;
+  padding-bottom: 20px;
   border-top: 1px solid #d9d9d9;
   display: grid;
   justify-content: center;

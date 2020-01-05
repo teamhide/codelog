@@ -57,7 +57,7 @@ export default {
   border: 1px solid lightgray;
   padding-left: 10px;
   padding-right: 10px;
-  margin: 10px;
+  margin: 5px;
 }
 .tag:hover {
   border-color: #6196ff;
