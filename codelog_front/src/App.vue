@@ -3,9 +3,7 @@
     <Header />
     <Section />
     <Footer />
-    <div class="write">
-      <span>Write</span>
-    </div>
+    <router-link to="/write" class="write-btn"></router-link>
   </div>
 </template>
 
@@ -36,17 +34,13 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.write {
+.write-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: white;
-  font-size: 16px;
-  display: grid;
-  align-items: center;
-  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: url(./assets/write-icon.svg) no-repeat;
+  background-size: cover;
 }
 </style>

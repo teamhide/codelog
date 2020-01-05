@@ -1,18 +1,38 @@
 <template>
-  <div class="feed">
-    <div class="feed-top">
-      <div class="feed-top-right">
-        <div class="feed-writer">
-          Hide
+  <div class="feed-container">
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-right">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2020-01-01 10:10:10
+          </div>
+          <div class="feed-body">
+            <a href="#">http://naver.com?????</a>
+          </div>
+          <div class="feed-tag">
+            #Go, #Python
+          </div>
         </div>
-        <div class="feed-date">
-          2020-01-01 10:10:10
-        </div>
-        <div class="feed-body">
-          <a href="#">http://naver.com?????</a>
-        </div>
-        <div class="feed-tag">
-          #Go, #Python
+      </div>
+    </div>
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-right">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2020-01-01 10:10:10
+          </div>
+          <div class="feed-body">
+            <a href="#">http://naver.com?????</a>
+          </div>
+          <div class="feed-tag">
+            #Go, #Python
+          </div>
         </div>
       </div>
     </div>
@@ -26,6 +46,11 @@ export default {
 </script>
 
 <style scoped>
+.feed-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto auto auto auto;
+}
 .feed {
   display: grid;
   background-color: white;

@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import Feed from './Feed.vue';
-
 export default {
   name: 'Section',
 }
@@ -14,9 +12,6 @@ export default {
 
 <style scoped>
 section {
-  display: grid;
-  justify-content: center;
-  grid-template-columns: auto auto auto auto;
   padding: 20px;
 }
 </style>

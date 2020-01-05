@@ -2,13 +2,12 @@
   <header>
     <div class="header-top">
       <div class="header-top-left">
-        <a href="#">검색</a>
+        <router-link to="/search" class="search-icon"></router-link>
       </div>
       <div class="header-top-center">
-        <a href="#">Codelog</a>
+        <router-link to="/">Codelog</router-link>
       </div>
       <div class="header-top-right">
-        <a href="#">아이콘</a>
       </div>
     </div>
     <div class="header-bottom">
@@ -92,5 +91,13 @@ header {
 .header-bottom a {
   color: white;
   text-decoration: none;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  background: url(../assets/search-icon.svg) no-repeat;
+  background-size: cover;
+  display: inline-block;
 }
 </style>
