@@ -39,6 +39,7 @@ header {
 .header-top {
   display: grid;
   grid-template-columns: auto auto auto;
+  border-bottom: 0.5px solid #94b8ff;
 }
 
 .header-bottom {
