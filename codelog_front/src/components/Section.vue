@@ -1,10 +1,6 @@
 <template>
   <section>
-    <Feed />
-    <Feed />
-    <Feed />
-    <Feed />
-    <Feed />
+    <router-view></router-view>
   </section>
 </template>
 
@@ -13,9 +9,6 @@ import Feed from './Feed.vue';
 
 export default {
   name: 'Section',
-  components: {
-    Feed
-  }
 }
 </script>
 

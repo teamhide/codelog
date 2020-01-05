@@ -13,10 +13,10 @@
     </div>
     <div class="header-bottom">
       <div class="header-bottom-left">
-        <a href="#">최신</a>
+        <router-link to="/">최신</router-link>
       </div>
       <div class="header-bottom-right">
-        <a href="#">태그</a>
+        <router-link to="/tags">태그</router-link>
       </div>
     </div>
   </header>
