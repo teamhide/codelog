@@ -15,6 +15,7 @@ export default {
   display: grid;
   height: 100vh;
 }
+
 .search-bar {
   height: 50px;
   border: none;
