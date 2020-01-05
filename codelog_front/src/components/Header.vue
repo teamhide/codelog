@@ -12,10 +12,10 @@
     </div>
     <div class="header-bottom">
       <div class="header-bottom-left">
-        <router-link to="/">최신</router-link>
+        <router-link to="/">Recent</router-link>
       </div>
       <div class="header-bottom-right">
-        <router-link to="/tags">태그</router-link>
+        <router-link to="/tags">Tags</router-link>
       </div>
     </div>
   </header>
