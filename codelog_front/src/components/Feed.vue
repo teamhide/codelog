@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       feeds: null,
-      next: null,
+      next: '',
     }
   },
   mounted() {
@@ -29,7 +29,7 @@ export default {
           this.feeds = res.data;
         })
         .catch((err) => {
-          alert(err);
+          alert("err");
         });
     },
   }
