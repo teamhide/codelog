@@ -1,12 +1,30 @@
 <template>
   <div class="search-container">
-    <input type="text" class="search-bar" placeholder="태그 또는 검색어를 입력하세요."/>
+    <input v-on:keyup.enter=getFeeds type="text" class="search-bar" placeholder="검색어를 입력하세요."/>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'Search'
+  name: 'Search',
+  data() {
+    return {
+      feeds: null,
+    }
+  },
+  methods: {
+    getFeeds() {
+      axios.get('http://127.0.0.1:5000/api/feeds/')
+        .then((res) => {
+          this.feeds = res.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+  }
 }
 </script>
 
@@ -14,7 +32,6 @@ export default {
 .search-container {
   display: grid;
   justify-items: center;
-  height: 100vh;
 }
 
 .search-bar {
