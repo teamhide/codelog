@@ -4,33 +4,6 @@
       <div class="tag-name">
         Python
       </div>
-      <div class="tag-count">
-        100
-      </div>
-    </div>
-    <div class="tag">
-      <div class="tag-name">
-        Container Python
-      </div>
-      <div class="tag-count">
-        100
-      </div>
-    </div>
-    <div class="tag">
-      <div class="tag-name">
-        Container Orchestration
-      </div>
-      <div class="tag-count">
-        100
-      </div>
-    </div>
-    <div class="tag">
-      <div class="tag-name">
-        Container Python
-      </div>
-      <div class="tag-count">
-        100
-      </div>
     </div>
   </div>
 </template>
@@ -62,13 +35,5 @@ export default {
 .tag:hover {
   border-color: #6196ff;
   color: #6196ff;
-}
-.tag-name {
-  padding-right: 5px;
-}
-.tag-count {
-  padding-left: 5px;
-  font-size: 12px;
-  color: #878787;
 }
 </style>

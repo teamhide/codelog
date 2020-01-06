@@ -1,156 +1,67 @@
 <template>
-  <div class="feed-container">
-    <div class="feed">
-      <div class="feed-top">
-        <div class="feed-top-left">
-          <div class="feed-writer">
-            Hide
+  <div>
+    <div class="feed-container">
+      <div class="feed" v-for="feed in feeds" v-bind:key="feed.id">
+        <div class="feed-top">
+          <div class="feed-top-left">
+            <div class="feed-writer">
+              {{ feed.nickname.length < 20 ? feed.nickname : feed.nickname.substr(0, 20) + "..." }}
+            </div>
+            <div class="feed-date">
+              {{ feed.created_at }}
+            </div>
           </div>
-          <div class="feed-date">
-            2010-01-10 10:12:00
+          <div class="feed-top-right">
+            <div class="feed-top-btn"></div>
           </div>
         </div>
-        <div class="feed-top-right">
-          <div class="feed-top-btn"></div>
+        <div class="feed-image">
+          <a :href="''+feed.url+''" target="_blank"><img :src="''+feed.image+''" width="100%" height="100%" style="background-size: cover; background-position: center;" /></a>
         </div>
-      </div>
-      <div class="feed-image">
-        <img />
-      </div>
-      <div class="feed-body">
-        <div class="feed-title">
-          Profile
-        </div>
-        <div class="feed-description">
-          풀스택 개발자라는 용어가 가끔...
-        </div>
-        <div class="feed-url">
-          http://hides.kr
+        <div class="feed-body">
+          <div class="feed-title">
+            {{ feed.title.length < 28 ? feed.title : feed.title.substr(0, 28) + "..." }}
+          </div>
+          <div class="feed-description">
+            {{ feed.description.length < 26 ? feed.description : feed.description.substr(0, 26) + "..." }}
+          </div>
+          <div class="feed-url">
+            {{ feed.url.length < 28 ? feed.url : feed.url.substr(0, 28) + "..." }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="feed">
-      <div class="feed-top">
-        <div class="feed-top-left">
-          <div class="feed-writer">
-            Hide
-          </div>
-          <div class="feed-date">
-            2010-01-10 10:12:00
-          </div>
-        </div>
-        <div class="feed-top-right">
-          <div class="feed-top-btn"></div>
-        </div>
-      </div>
-      <div class="feed-image">
-        <img />
-      </div>
-      <div class="feed-body">
-        <div class="feed-title">
-          Profile
-        </div>
-        <div class="feed-description">
-          풀스택 개발자라는 용어가 가끔...
-        </div>
-        <div class="feed-url">
-          http://hides.kr
-        </div>
-      </div>
-    </div>
-    <div class="feed">
-      <div class="feed-top">
-        <div class="feed-top-left">
-          <div class="feed-writer">
-            Hide
-          </div>
-          <div class="feed-date">
-            2010-01-10 10:12:00
-          </div>
-        </div>
-        <div class="feed-top-right">
-          <div class="feed-top-btn"></div>
-        </div>
-      </div>
-      <div class="feed-image">
-        <img />
-      </div>
-      <div class="feed-body">
-        <div class="feed-title">
-          Profile
-        </div>
-        <div class="feed-description">
-          풀스택 개발자라는 용어가 가끔...
-        </div>
-        <div class="feed-url">
-          http://hides.kr
-        </div>
-      </div>
-    </div>
-    <div class="feed">
-      <div class="feed-top">
-        <div class="feed-top-left">
-          <div class="feed-writer">
-            Hide
-          </div>
-          <div class="feed-date">
-            2010-01-10 10:12:00
-          </div>
-        </div>
-        <div class="feed-top-right">
-          <div class="feed-top-btn"></div>
-        </div>
-      </div>
-      <div class="feed-image">
-        <img />
-      </div>
-      <div class="feed-body">
-        <div class="feed-title">
-          Profile
-        </div>
-        <div class="feed-description">
-          풀스택 개발자라는 용어가 가끔...
-        </div>
-        <div class="feed-url">
-          http://hides.kr
-        </div>
-      </div>
-    </div>
-    <div class="feed">
-      <div class="feed-top">
-        <div class="feed-top-left">
-          <div class="feed-writer">
-            Hide
-          </div>
-          <div class="feed-date">
-            2010-01-10 10:12:00
-          </div>
-        </div>
-        <div class="feed-top-right">
-          <div class="feed-top-btn"></div>
-        </div>
-      </div>
-      <div class="feed-image">
-        <img />
-      </div>
-      <div class="feed-body">
-        <div class="feed-title">
-          Profile
-        </div>
-        <div class="feed-description">
-          풀스택 개발자라는 용어가 가끔...
-        </div>
-        <div class="feed-url">
-          http://hides.kr
-        </div>
-      </div>
+    <div v-if="this.feeds" class="load-feed">
+      <a v-on:click=getFeeds>Load more</a>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'Feed'
+  name: 'Feed',
+  data() {
+    return {
+      feeds: null,
+      next: null,
+    }
+  },
+  mounted() {
+    this.getFeeds()
+  },
+  methods: {
+    getFeeds() {
+      axios.get('http://127.0.0.1:5000/api/feeds/')
+        .then((res) => {
+          this.feeds = res.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+  }
 }
 </script>
 
@@ -198,13 +109,6 @@ export default {
   width: 250px;
   height: 150px;
 }
-.feed-image img {
-  background: url("../assets/hide.png") no-repeat;
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 100%;
-}
 .feed-description {
   font-size: 14px;
   color: #878787;
@@ -214,6 +118,21 @@ export default {
 }
 .feed-body {
   padding: 10px;
+}
+.load-feed {
+  margin-top: 15px;
+  text-align: center;
+}
+.load-feed a {
+  text-decoration: none;
+  color: black;
+  border: 1px solid lightgray;
+  padding: 10px;
+  border-radius: 15px;
+}
+.load-feed a:hover {
+  background-color: #6196ff;
+  color: white;
 }
 @media screen and (max-width: 510px){
     .feed{
