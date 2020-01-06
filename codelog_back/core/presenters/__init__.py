@@ -5,6 +5,7 @@ from flask import jsonify
 class Presenter:
     __metaclass__ = abc.ABCMeta
 
+    @classmethod
     @abc.abstractmethod
-    def transform(self, response) -> jsonify:
+    def transform(cls, response) -> jsonify:
         pass

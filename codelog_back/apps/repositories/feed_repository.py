@@ -1,8 +1,11 @@
 import abc
-from core.databases import session
-from apps.models import Feed, Tag
-from apps.entities import FeedEntity
 from typing import List, Union
+
+from sqlalchemy import or_
+
+from apps.entities import FeedEntity, TagEntity
+from apps.models import Feed, Tag
+from core.databases import session
 
 
 class FeedRepo:
@@ -26,6 +29,18 @@ class FeedRepo:
 
     @abc.abstractmethod
     def create_tag(self, name: Union[str, List], many: bool = False) -> None:
+        pass
+
+    @abc.abstractmethod
+    def get_tag_list(self) -> List[TagEntity]:
+        pass
+
+    @abc.abstractmethod
+    def search_feed(
+        self,
+        body: str,
+        offset: int = None,
+    ) -> List[FeedEntity]:
         pass
 
 
@@ -79,3 +94,33 @@ class FeedMySQLRepo(FeedRepo):
             pass
 
         session.commit()
+
+    def get_tag_list(self) -> List[TagEntity]:
+        tags = session.query(Tag).all()
+
+        return [
+            tag.to_entity()
+            for tag in tags
+        ]
+
+    def search_feed(
+        self,
+        body: str,
+        offset: int = None,
+    ) -> List[FeedEntity]:
+        query = session.query(Feed)
+
+        keyword = f'%{body}%'
+        query = query.filter(
+            or_(
+                Feed.title.like(keyword),
+                Feed.description.like(keyword),
+            ),
+        )
+
+        feeds = query.order_by(Feed.id.desc()).offset(offset).limit(20).all()
+
+        return [
+            feed.to_entity()
+            for feed in feeds
+        ]

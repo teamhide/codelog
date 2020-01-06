@@ -17,3 +17,11 @@ class FeedEntity:
     tags: List = None
     created_at: datetime = None
     updated_at: datetime = None
+
+
+@dataclass
+class TagEntity:
+    id: int = None
+    name: str = None
+    created_at: datetime = None
+    updated_at: datetime = None

@@ -8,7 +8,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from apps.entities import FeedEntity
+from apps.entities import FeedEntity, TagEntity
 from core.databases import Base
 from core.databases.mixin import TimestampMixin
 
@@ -56,3 +56,11 @@ class Tag(Base, TimestampMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Unicode(30), nullable=False, unique=True)
     feeds = relationship('Feed', secondary=feed_tag, back_populates='tags')
+
+    def to_entity(self):
+        return TagEntity(
+            id=self.id,
+            name=self.name,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )

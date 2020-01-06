@@ -79,3 +79,13 @@ class CreateFeedUsecase(FeedUsecase):
         )
 
         return feed
+
+
+class GetTagListUsecase(FeedUsecase):
+    def execute(self):
+        return self.feed_repo.get_tag_list()
+
+
+class SearchFeedUsecase(FeedUsecase):
+    def execute(self, body: str, offset: int):
+        return self.feed_repo.search_feed(body=body, offset=offset)

@@ -1,16 +1,37 @@
 <template>
   <div class="tag-container">
-    <div class="tag">
+    <div class="tag" v-for="tag in tags" v-bind:key="tag.id">
       <div class="tag-name">
-        Python
-      </div>
+        {{ tag.name }}
+      </div>      
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'Tag'
+  name: 'Tag',
+  data() {
+    return {
+      tags: null,
+    }
+  },
+  mounted() {
+    this.getTags()
+  },
+  methods: {
+    getTags() {
+      axios.get('http://127.0.0.1:5000/api/feeds/tags')
+        .then((res) => {
+          this.tags = res.data;
+        })
+        .catch((err) => {
+          alert(err)
+        })
+    }
+  }
 }
 </script>
 

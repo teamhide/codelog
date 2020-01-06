@@ -28,3 +28,8 @@ class CreateFeedResponseSchema(Schema):
     tags = fields.List(fields.Str)
     created_at = fields.String()
     updated_at = fields.String()
+
+
+class GetTagListResponseSchema(Schema):
+    id = fields.Integer(required=True)
+    name = fields.String(required=True)

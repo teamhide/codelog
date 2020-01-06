@@ -4,10 +4,20 @@ from flask import request
 from marshmallow.exceptions import ValidationError
 
 from apps.schemas import CreateFeedRequestSchema
-from apps.usecases import GetFeedListUsecase, CreateFeedUsecase
+from apps.usecases import (
+    GetFeedListUsecase,
+    CreateFeedUsecase,
+    GetTagListUsecase,
+    SearchFeedUsecase,
+)
 from typing import NoReturn, Union
 from apps.entities import FeedEntity
-from apps.presenters import GetFeedListPresenter, CreateFeedPresenter
+from apps.presenters import (
+    GetFeedListPresenter,
+    CreateFeedPresenter,
+    GetTagListPresenter,
+    SearchFeedPresenter,
+)
 
 feed_bp = Blueprint('feeds', __name__, url_prefix='/api/feeds')
 
@@ -31,3 +41,18 @@ def create_feed() -> Union[NoReturn, FeedEntity]:
     )
 
     return CreateFeedPresenter.transform(response=feed)
+
+
+@feed_bp.route('/tags', methods=['GET'])
+def get_tag_list():
+    tags = GetTagListUsecase().execute()
+    return GetTagListPresenter().transform(response=tags)
+
+
+@feed_bp.route('/search', methods=['GET'])
+def search_feed():
+    feeds = SearchFeedUsecase().execute(
+        body=request.args.get('body'),
+        offset=request.args.get('offset'),
+    )
+    return SearchFeedPresenter.transform(response=feeds)
