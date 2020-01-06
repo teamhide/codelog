@@ -10,6 +10,7 @@ flask = "*"
 sqlalchemy = "*"
 pymysql = "*"
 marshmallow = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.7"
