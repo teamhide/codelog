@@ -13,6 +13,7 @@ export default {
 <style scoped>
 .search-container {
   display: grid;
+  justify-items: center;
   height: 100vh;
 }
 
@@ -22,5 +23,7 @@ export default {
   padding: 10px;
   font-size: 20px;
   border-radius: 20px;
+  width: 90%;
+  max-width: 960px;
 }
 </style>

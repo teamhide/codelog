@@ -1,8 +1,5 @@
 <template>
   <div class="write-container">
-    <div class="post-subject">
-      <input type="text" placeholder="Description" />
-    </div>
     <div class="post-url">
       <textarea placeholder="URL" rows="5"/>
     </div>
@@ -27,16 +24,6 @@ export default {
   justify-items: center;
   align-items: center;
 }
-
-.post-subject input {
-  border: none;
-  font-size: 20px;
-  padding: 15px;
-  min-width: 410px;
-  border-radius: 10px;
-  font-weight: 200;
-}
-
 .post-url textarea {
   border: none;
   font-size: 20px;
@@ -49,7 +36,6 @@ export default {
   border-radius: 10px;
   font-weight: 200;
 }
-
 .post-tags input {
   border: none;
   font-size: 20px;
@@ -58,7 +44,6 @@ export default {
   border-radius: 10px;
   font-weight: 200;
 }
-
 .post-write {
   margin-top: 20px;
   padding: 20px;
@@ -71,7 +56,6 @@ export default {
   text-align: center;
   font-size: 22px;
 }
-
 .write-btn {
   display: none;
 }

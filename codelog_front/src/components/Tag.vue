@@ -45,7 +45,6 @@ export default {
 .tag-container {
   display: flex;
   flex-wrap: wrap;
-  height: 100vh;
 }
 .tag {
   display: grid;

@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="footer">
-      @2020 Hide 
+      COPYRIGHT Hide, ALL RIGHT RESERVED
     </div>
   </footer>
 </template>
@@ -20,7 +20,7 @@ export default {
   display: grid;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 100;
 }
 </style>
