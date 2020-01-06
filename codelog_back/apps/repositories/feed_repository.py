@@ -38,7 +38,7 @@ class FeedRepo:
     @abc.abstractmethod
     def search_feed(
         self,
-        body: str,
+        keyword: str,
         offset: int = None,
     ) -> List[FeedEntity]:
         pass
@@ -105,20 +105,19 @@ class FeedMySQLRepo(FeedRepo):
 
     def search_feed(
         self,
-        body: str,
+        keyword: str,
         offset: int = None,
     ) -> List[FeedEntity]:
         query = session.query(Feed)
 
-        keyword = f'%{body}%'
         query = query.filter(
             or_(
-                Feed.title.like(keyword),
-                Feed.description.like(keyword),
+                Feed.title.like(f'%{keyword}%'),
+                Feed.description.like(f'%{keyword}%'),
             ),
         )
 
-        feeds = query.order_by(Feed.id.desc()).offset(offset).limit(20).all()
+        feeds = query.order_by(Feed.id.desc()).offset(offset).limit(20)
 
         return [
             feed.to_entity()

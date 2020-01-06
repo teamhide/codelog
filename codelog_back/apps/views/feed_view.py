@@ -52,7 +52,7 @@ def get_tag_list():
 @feed_bp.route('/search', methods=['GET'])
 def search_feed():
     feeds = SearchFeedUsecase().execute(
-        body=request.args.get('body'),
+        keyword=request.args.get('keyword'),
         offset=request.args.get('offset'),
     )
     return SearchFeedPresenter.transform(response=feeds)

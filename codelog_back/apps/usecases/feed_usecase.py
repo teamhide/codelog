@@ -87,5 +87,8 @@ class GetTagListUsecase(FeedUsecase):
 
 
 class SearchFeedUsecase(FeedUsecase):
-    def execute(self, body: str, offset: int):
-        return self.feed_repo.search_feed(body=body, offset=offset)
+    def execute(self, keyword: str, offset: int):
+        if len(keyword) <= 1:
+            abort(400, 'keyword length must bigger than 2')
+
+        return self.feed_repo.search_feed(keyword=keyword, offset=offset)
