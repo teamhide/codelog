@@ -1,14 +1,19 @@
 <template>
   <div class="search-container">
     <input v-on:keyup.enter=getFeeds type="text" class="search-bar" placeholder="검색어를 입력하세요."/>
+    <FeedDetail :feeds="feeds"></FeedDetail>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import FeedDetail from './FeedDetail.vue'
 
 export default {
   name: 'Search',
+  components: {
+    'FeedDetail': FeedDetail,
+  },
   data() {
     return {
       feeds: null,
@@ -33,7 +38,6 @@ export default {
   display: grid;
   justify-items: center;
 }
-
 .search-bar {
   height: 50px;
   border: none;
