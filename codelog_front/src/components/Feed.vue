@@ -29,6 +29,122 @@
         </div>
       </div>
     </div>
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-left">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2010-01-10 10:12:00
+          </div>
+        </div>
+        <div class="feed-top-right">
+          <div class="feed-top-btn"></div>
+        </div>
+      </div>
+      <div class="feed-image">
+        <img />
+      </div>
+      <div class="feed-body">
+        <div class="feed-title">
+          Profile
+        </div>
+        <div class="feed-description">
+          풀스택 개발자라는 용어가 가끔...
+        </div>
+        <div class="feed-url">
+          http://hides.kr
+        </div>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-left">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2010-01-10 10:12:00
+          </div>
+        </div>
+        <div class="feed-top-right">
+          <div class="feed-top-btn"></div>
+        </div>
+      </div>
+      <div class="feed-image">
+        <img />
+      </div>
+      <div class="feed-body">
+        <div class="feed-title">
+          Profile
+        </div>
+        <div class="feed-description">
+          풀스택 개발자라는 용어가 가끔...
+        </div>
+        <div class="feed-url">
+          http://hides.kr
+        </div>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-left">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2010-01-10 10:12:00
+          </div>
+        </div>
+        <div class="feed-top-right">
+          <div class="feed-top-btn"></div>
+        </div>
+      </div>
+      <div class="feed-image">
+        <img />
+      </div>
+      <div class="feed-body">
+        <div class="feed-title">
+          Profile
+        </div>
+        <div class="feed-description">
+          풀스택 개발자라는 용어가 가끔...
+        </div>
+        <div class="feed-url">
+          http://hides.kr
+        </div>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="feed-top">
+        <div class="feed-top-left">
+          <div class="feed-writer">
+            Hide
+          </div>
+          <div class="feed-date">
+            2010-01-10 10:12:00
+          </div>
+        </div>
+        <div class="feed-top-right">
+          <div class="feed-top-btn"></div>
+        </div>
+      </div>
+      <div class="feed-image">
+        <img />
+      </div>
+      <div class="feed-body">
+        <div class="feed-title">
+          Profile
+        </div>
+        <div class="feed-description">
+          풀스택 개발자라는 용어가 가끔...
+        </div>
+        <div class="feed-url">
+          http://hides.kr
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,12 +156,13 @@ export default {
 
 <style scoped>
 .feed-container {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  grid-template-columns: auto auto auto auto;
 }
 .feed {
   display: grid;
+  margin: 10px;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 0px white inset, 0 0 3px rgba(0, 0, 0, 0.2);
@@ -97,5 +214,15 @@ export default {
 }
 .feed-body {
   padding: 10px;
+}
+@media screen and (max-width: 510px){
+    .feed{
+        width: 100%;
+        height: 500;
+    }
+    .feed-image {
+      width: 100%;
+      height: 250px;
+    }
 }
 </style>
