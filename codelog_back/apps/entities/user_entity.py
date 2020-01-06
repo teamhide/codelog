@@ -6,6 +6,7 @@ from datetime import datetime
 class UserEntity:
     id: int = None
     email: str = None
+    nickname: str = None
     login_type: str = None
     access_token: str = None
     refresh_token: str = None

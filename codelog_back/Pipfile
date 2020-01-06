@@ -11,6 +11,9 @@ sqlalchemy = "*"
 pymysql = "*"
 marshmallow = "*"
 alembic = "*"
+pyjwt = "*"
+pytest = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,5 +1,6 @@
 from flask import Flask
 
+from apps.views import feed_bp, user_bp
 from core.databases import session
 
 
@@ -15,10 +16,8 @@ def init_middlewares(app: Flask):
 
 
 def init_blueprint(app: Flask):
-    pass
-    # app.register_blueprint(home_bp)
-    # app.register_blueprint(post_bp_v1, url_prefix='/api/v1/posts/')
-    # app.register_blueprint(user_bp_v1, url_prefix='/api/v1/users/')
+    app.register_blueprint(feed_bp)
+    app.register_blueprint(user_bp)
 
 
 def init_extensions(app: Flask):
