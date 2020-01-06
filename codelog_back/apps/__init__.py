@@ -4,6 +4,7 @@ from apps.views import feed_bp, user_bp
 from core.databases import session
 from flask_cors import CORS
 
+
 def init_listeners(app: Flask):
     @app.after_request
     def after_request(response):
