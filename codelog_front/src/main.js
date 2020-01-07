@@ -5,11 +5,13 @@ import Feed from './components/Feed.vue'
 import Tag from './components/Tag.vue'
 import Search from './components/Search.vue'
 import Write from './components/Write.vue'
+import Login from './components/Login.vue'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -26,6 +28,10 @@ const router = new VueRouter({
     {
       path: '/write',
       component: Write
+    },
+    {
+      path: '/login',
+      component: Login
     },
   ]
 })  

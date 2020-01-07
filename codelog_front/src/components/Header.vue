@@ -8,6 +8,7 @@
         <router-link to="/">Codelog</router-link>
       </div>
       <div class="header-top-right">
+        <img v-on:click="getCode" src="../assets/login-icon.png" width="35" height="35" />
       </div>
     </div>
     <div class="header-bottom">
@@ -24,6 +25,11 @@
 <script>
 export default {
   name: 'Header',
+  methods: {
+    getCode() {
+      window.location.replace('https://github.com/login/oauth/authorize?client_id=86eb568f5e9a72afbe01&redirect_uri=http://localhost:8080/login&scope=read:user')
+    }
+  }
 }
 </script>
 
@@ -34,65 +40,57 @@ header {
   display: grid;
   grid-template-rows: auto auto;
 }
-
 .header-top {
   display: grid;
   grid-template-columns: auto auto auto;
   border-bottom: 0.5px solid #94b8ff;
 }
-
 .header-bottom {
   display: grid;
   grid-template-columns: auto auto;
 }
-
 .header-top-left {
   display: grid;
   justify-content: flex-start;
   align-content: center;
   padding-left: 20px;
 }
-
 .header-top-left a {
   color: white;
   text-decoration: none;
 }
-
 .header-top-center {
   display: grid;
   justify-content: center;
   align-items: center;
 }
-
 .header-top-center a {
   color: white;
   text-decoration: none;
   font-size: 25px;
 }
-
 .header-top-right {
   display: grid;
   justify-content: flex-end;
   align-content: center;
   padding-right: 20px;
 }
-
+.header-top-right img {
+  cursor: pointer;
+}
 .header-top-right a {
   color: white;
   text-decoration: none;
 }
-
 .header-bottom-left, .header-bottom-right {
   display: grid;
   justify-content: center;
   align-items: center;
 }
-
 .header-bottom a {
   color: white;
   text-decoration: none;
 }
-
 .search-icon {
   width: 20px;
   height: 20px;

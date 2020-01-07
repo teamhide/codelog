@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     async getFeeds() {
-      var url = 'http://127.0.0.1:5000/api/feeds/';
+      var url = 'http://127.0.0.1:8000/api/feeds/';
       let data;
 
       if(this.prev) {
