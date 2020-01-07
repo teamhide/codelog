@@ -23,7 +23,42 @@ class FeedUsecase:
         self.feed_repo = FeedMySQLRepo()
         self.user_repo = UserMySQLRepo()
 
-    def parse(self, url: str) -> OGTag:
+
+class GetFeedListUsecase(FeedUsecase):
+    def execute(self, prev: int = None) -> List[FeedEntity]:
+        feeds = self.feed_repo.get_feed_list(prev=prev)
+        return feeds
+
+
+class CreateFeedUsecase(FeedUsecase):
+    def execute(self, url: str, tags: str, auth_header: str) -> FeedEntity:
+        # Check
+        if not auth_header:
+            abort(400, 'token header error')
+
+        # Extract payload from token
+        payload = TokenHelper.decode(token=auth_header.split()[1])
+        user = self.user_repo.get_user(user_id=int(payload['user_id']))
+
+        if not user:
+            abort(400, 'user does not exist')
+
+        # Get og tag info
+        og_info = self._parse(url=url)
+
+        # Create feed
+        feed = self.feed_repo.create_feed(
+            user_id=user.id,
+            url=url,
+            tags=tags.split(','),
+            image=og_info.image,
+            title=og_info.title,
+            description=og_info.description,
+        )
+
+        return feed
+
+    def _parse(self, url: str) -> OGTag:
         try:
             r = requests.get(url=url, headers=get_config().request_headers)
         except (
@@ -46,46 +81,11 @@ class FeedUsecase:
         return ogtag
 
 
-class GetFeedListUsecase(FeedUsecase):
-    def execute(self) -> List[FeedEntity]:
-        feeds = self.feed_repo.get_feed_list()
-        return feeds
-
-
-class CreateFeedUsecase(FeedUsecase):
-    def execute(self, url: str, tags: str, auth_header: str) -> FeedEntity:
-        # Check
-        if not auth_header:
-            abort(400, 'token header error')
-
-        # Extract payload from token
-        payload = TokenHelper.decode(token=auth_header.split()[1])
-        user = self.user_repo.get_user(user_id=int(payload['user_id']))
-
-        if not user:
-            abort(400, 'user does not exist')
-
-        # Get og tag info
-        og_info = self.parse(url=url)
-
-        # Create feed
-        feed = self.feed_repo.create_feed(
-            user_id=user.id,
-            url=url,
-            tags=tags.split(','),
-            image=og_info.image,
-            title=og_info.title,
-            description=og_info.description,
-        )
-
-        return feed
-
-
 class GetTagListUsecase(FeedUsecase):
     def execute(self):
         return self.feed_repo.get_tag_list()
 
 
 class SearchFeedUsecase(FeedUsecase):
-    def execute(self, keyword: str, prev: int):
+    def execute(self, keyword: str, prev: int = None):
         return self.feed_repo.search_feed(keyword=keyword, prev=prev)

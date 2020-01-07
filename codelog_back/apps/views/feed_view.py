@@ -24,7 +24,7 @@ feed_bp = Blueprint('feeds', __name__, url_prefix='/api/feeds')
 
 @feed_bp.route('/', methods=['GET'])
 def get_feed_list():
-    feeds = GetFeedListUsecase().execute()
+    feeds = GetFeedListUsecase().execute(prev=request.args.get('prev'))
     return GetFeedListPresenter.transform(response=feeds)
 
 
@@ -43,7 +43,7 @@ def create_feed() -> Union[NoReturn, FeedEntity]:
     return CreateFeedPresenter.transform(response=feed)
 
 
-@feed_bp.route('/tags', methods=['GET'])
+@feed_bp.route('/tags/', methods=['GET'])
 def get_tag_list():
     tags = GetTagListUsecase().execute()
     return GetTagListPresenter().transform(response=tags)
@@ -53,9 +53,9 @@ def get_tag_list():
 def search_feed():
     try:
         validator = SearchFeedRequestSchema().load(data=request.args)
-    except ValidationError as e:
-        print(e)
+    except ValidationError:
         abort(400, 'validation error')
 
     feeds = SearchFeedUsecase().execute(**validator)
+
     return SearchFeedPresenter.transform(response=feeds)

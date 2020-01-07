@@ -12,7 +12,7 @@ class FeedRepo:
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def get_feed_list(self) -> List[FeedEntity]:
+    def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
         pass
 
     @abc.abstractmethod
@@ -45,8 +45,13 @@ class FeedRepo:
 
 
 class FeedMySQLRepo(FeedRepo):
-    def get_feed_list(self) -> List[FeedEntity]:
-        feeds = session.query(Feed).order_by(Feed.id.desc()).limit(20).all()
+    def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
+        query = session.query(Feed)
+
+        if prev:
+            query = query.filter(Feed.id < prev)
+
+        feeds = query.order_by(Feed.id.desc()).limit(10)
         return [
             feed.to_entity()
             for feed in feeds
@@ -110,6 +115,9 @@ class FeedMySQLRepo(FeedRepo):
     ) -> List[FeedEntity]:
         query = session.query(Feed)
 
+        if prev:
+            query = query.filter(Feed.id < prev)
+
         query = query.filter(
             or_(
                 Feed.title.like(f'%{keyword}%'),
@@ -117,7 +125,7 @@ class FeedMySQLRepo(FeedRepo):
             ),
         )
 
-        feeds = query.order_by(Feed.id.desc()).limit(20)
+        feeds = query.order_by(Feed.id.desc()).limit(10)
 
         return [
             feed.to_entity()
