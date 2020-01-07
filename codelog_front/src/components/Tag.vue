@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getTags() {
-      axios.get('http://127.0.0.1:5000/api/feeds/tags')
+      axios.get('http://127.0.0.1:5000/api/feeds/tags/')
         .then((res) => {
           this.tags = res.data;
         })

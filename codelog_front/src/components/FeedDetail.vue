@@ -31,9 +31,6 @@
         </div>
       </div>
     </div>
-    <div v-if="this.feeds" class="load-feed">
-      <a v-on:click=getFeeds>Load more</a>
-    </div>
   </div>
 </template>
 
@@ -43,11 +40,6 @@ export default {
     props: {
         feeds: Array
     },
-    methods: {
-        test() {
-            alert(this.feeds)
-        }
-    }
 }
 </script>
 
@@ -104,21 +96,6 @@ export default {
 }
 .feed-body {
   padding: 10px;
-}
-.load-feed {
-  margin-top: 15px;
-  text-align: center;
-}
-.load-feed a {
-  text-decoration: none;
-  color: black;
-  border: 1px solid lightgray;
-  padding: 10px;
-  border-radius: 15px;
-}
-.load-feed a:hover {
-  background-color: #6196ff;
-  color: white;
 }
 @media screen and (max-width: 510px){
     .feed{
