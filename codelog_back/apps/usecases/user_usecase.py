@@ -30,6 +30,9 @@ class UserUsecase:
 
 class GithubLoginUsecase(UserUsecase):
     def execute(self, code: str) -> Union[Token, abort]:
+        if len(code) == 0:
+            abort(400, 'invalid code')
+
         response = requests.post(
             url='https://github.com/login/oauth/access_token',
             data={
@@ -67,6 +70,7 @@ class GithubLoginUsecase(UserUsecase):
         else:
             user = self.user_repo.save_user(
                 email=email,
+                nickname=nickname,
                 login_type='github',
                 access_token=github_access_token,
                 refresh_token=refresh_token,

@@ -25,6 +25,7 @@ class UserRepo:
     def save_user(
         self,
         email: str,
+        nickname: str,
         login_type: str,
         access_token: str,
         refresh_token: str,
@@ -71,12 +72,18 @@ class UserMySQLRepo(UserRepo):
     def save_user(
         self,
         email: str,
+        nickname: str,
         login_type: str,
         access_token: str,
         refresh_token: str,
         avatar_url: str,
     ) -> Union[UserEntity, abort]:
-        user = User(email=email, login_type=login_type)
+        user = User(
+            email=email,
+            login_type=login_type,
+            nickname=nickname,
+            avatar_url=avatar_url,
+        )
 
         if not access_token and refresh_token:
             abort(500, 'access_token and refresh_token is empty')
