@@ -1,18 +1,25 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
+from marshmallow import ValidationError
+
+from apps.presenters import OAuthLoginResponsePresenter
+from apps.schemas import OAuthLoginRequestSchema
 from apps.usecases import (
     GithubLoginUsecase,
     GoogleLoginUsecase,
     KakaoLoginUsecase,
 )
-from apps.presenters import OAuthLoginResponsePresenter
-
 
 oauth_bp = Blueprint('oauth', __name__, url_prefix='/oauth')
 
 
 @oauth_bp.route('/github/login', methods=['GET'])
 def github_login():
-    token = GithubLoginUsecase().execute(code=request.args.get('code'))
+    try:
+        validator = OAuthLoginRequestSchema().load(data=request.args)
+    except ValidationError:
+        abort(400, 'invalid code')
+
+    token = GithubLoginUsecase().execute(**validator)
     return OAuthLoginResponsePresenter.transform(response=token)
 
 

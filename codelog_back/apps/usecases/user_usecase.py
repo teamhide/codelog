@@ -30,9 +30,6 @@ class UserUsecase:
 
 class GithubLoginUsecase(UserUsecase):
     def execute(self, code: str) -> Union[Token, abort]:
-        if len(code) == 0:
-            abort(400, 'invalid code')
-
         response = requests.post(
             url='https://github.com/login/oauth/access_token',
             data={
@@ -43,7 +40,11 @@ class GithubLoginUsecase(UserUsecase):
             }
         )
         pattern = 'access_token=(\w+)'
-        github_access_token = re.findall(pattern, response.text)[0]
+
+        try:
+            github_access_token = re.findall(pattern, response.text)[0]
+        except IndexError:
+            abort(400, 'get access token error')
 
         response = requests.get(
             url='https://api.github.com/user',

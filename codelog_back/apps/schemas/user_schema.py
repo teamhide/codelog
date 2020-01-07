@@ -1,4 +1,13 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates, ValidationError
+
+
+class OAuthLoginRequestSchema(Schema):
+    code = fields.String(required=True)
+
+    @validates('code')
+    def validate_code(self, data, **kwargs):
+        if len(data) == 0:
+            raise ValidationError('validation error')
 
 
 class OAuthLoginResponseSchema(Schema):
