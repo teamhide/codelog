@@ -3,7 +3,7 @@ from flask import abort
 from flask import request
 from marshmallow.exceptions import ValidationError
 
-from apps.schemas import CreateFeedRequestSchema
+from apps.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
 from apps.usecases import (
     GetFeedListUsecase,
     CreateFeedUsecase,
@@ -51,8 +51,11 @@ def get_tag_list():
 
 @feed_bp.route('/search', methods=['GET'])
 def search_feed():
-    feeds = SearchFeedUsecase().execute(
-        keyword=request.args.get('keyword'),
-        offset=request.args.get('offset'),
-    )
+    try:
+        validator = SearchFeedRequestSchema().load(data=request.args)
+    except ValidationError as e:
+        print(e)
+        abort(400, 'validation error')
+
+    feeds = SearchFeedUsecase().execute(**validator)
     return SearchFeedPresenter.transform(response=feeds)

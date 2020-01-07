@@ -39,7 +39,7 @@ class FeedRepo:
     def search_feed(
         self,
         keyword: str,
-        offset: int = None,
+        prev: int = None,
     ) -> List[FeedEntity]:
         pass
 
@@ -106,7 +106,7 @@ class FeedMySQLRepo(FeedRepo):
     def search_feed(
         self,
         keyword: str,
-        offset: int = None,
+        prev: int = None,
     ) -> List[FeedEntity]:
         query = session.query(Feed)
 
@@ -117,7 +117,7 @@ class FeedMySQLRepo(FeedRepo):
             ),
         )
 
-        feeds = query.order_by(Feed.id.desc()).offset(offset).limit(20)
+        feeds = query.order_by(Feed.id.desc()).limit(20)
 
         return [
             feed.to_entity()

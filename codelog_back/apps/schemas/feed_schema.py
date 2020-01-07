@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates, ValidationError
 
 
 class GetFeedListResponseSchema(Schema):
@@ -33,3 +33,13 @@ class CreateFeedResponseSchema(Schema):
 class GetTagListResponseSchema(Schema):
     id = fields.Integer(required=True)
     name = fields.String(required=True)
+
+
+class SearchFeedRequestSchema(Schema):
+    keyword = fields.String(required=True)
+    prev = fields.Integer(required=False, allow_none=True)
+
+    @validates('keyword')
+    def validate_keyword(self, data, **kwargs):
+        if len(data) <= 1:
+            raise ValidationError('validation error')
