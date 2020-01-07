@@ -1,6 +1,6 @@
 from flask import Flask
 
-from apps.views import feed_bp, user_bp
+from apps.views import feed_bp, user_bp, oauth_bp
 from core.databases import session
 from flask_cors import CORS
 
@@ -19,6 +19,7 @@ def init_middlewares(app: Flask):
 def init_blueprint(app: Flask):
     app.register_blueprint(feed_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(oauth_bp)
 
 
 def init_extensions(app: Flask):

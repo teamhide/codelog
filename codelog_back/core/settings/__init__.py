@@ -3,6 +3,19 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class OAuthConfig:
+    google_client_id: str = os.getenv('google_client_id')
+    google_client_secret: str = os.getenv('google_client_secret')
+    google_redirect_uri: str = os.getenv('google_redirect_uri')
+    kakao_client_id: str = os.getenv('kakao_client_id')
+    kakao_client_secret: str = os.getenv('kakao_client_secret')
+    kakao_redirect_uri: str = os.getenv('kakao_redirect_uri')
+    github_client_id: str = os.getenv('github_client_id')
+    github_client_secret: str = os.getenv('github_client_secret')
+    github_redirect_uri: str = os.getenv('github_redirect_uri')
+
+
+@dataclass(frozen=True)
 class Config:
     env: str
     debug: bool = os.getenv('DEBUG', True)
