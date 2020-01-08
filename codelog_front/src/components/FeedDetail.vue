@@ -12,7 +12,11 @@
             </div>
           </div>
           <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right">
-            <div class="feed-top-btn"></div>
+            <button v-on:click="myFunction" class="feed-top-btn"></button>
+              <div id="myDropdown" class="dropdown-content">
+                <a href="#">Modify</a>
+                <a href="#">Delete</a>
+              </div>
           </div>
         </div>
         <div class="feed-image">
@@ -20,7 +24,7 @@
             <a :href="''+feed.url+''" target="_blank"><img :src="''+feed.image+''" width="100%" height="100%" style="background-size: cover; background-position: center;" /></a>
           </template>
           <template v-else>
-            <img src="../assets/no-image.jpg" width="100%" height="100%" style="background-size: cover; background-position: center;" />
+            <a :href="''+feed.url+''" target="_blank"><img src="../assets/no-image.jpg" width="100%" height="100%" style="background-size: cover; background-position: center;" /></a>
           </template>
         </div>
         <div class="feed-body">
@@ -53,6 +57,11 @@ export default {
     props: {
         feeds: Array
     },
+    methods: {
+      myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      },
+    }
 }
 </script>
 
@@ -84,6 +93,43 @@ export default {
   background: url("../assets/menu-icon.svg") no-repeat;
   background-size: cover;
   background-position: center;
+  border: none;
+  cursor: pointer;
+}
+/* Dropdown button on hover & focus */
+.feed-top-btn:hover, .feed-top-btn:focus {
+
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+  display:block;
 }
 .feed-writer {
   display: grid;
