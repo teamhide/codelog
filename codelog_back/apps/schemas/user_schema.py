@@ -13,3 +13,4 @@ class OAuthLoginRequestSchema(Schema):
 class OAuthLoginResponseSchema(Schema):
     token = fields.String(required=True)
     refresh_token = fields.String(required=True)
+    nickname = fields.String(required=True)

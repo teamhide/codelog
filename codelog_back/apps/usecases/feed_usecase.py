@@ -69,13 +69,28 @@ class CreateFeedUsecase(FeedUsecase):
         ogtag = OGTag()
 
         title_pattern = '"og:title" content="(.+?)"'
-        ogtag.title = re.findall(title_pattern, r.text)
+        title = re.findall(title_pattern, r.text)
+
+        if title:
+            ogtag.title = title
+        else:
+            ogtag.title = None
 
         image_pattern = '"og:image" content="(.+?)"'
-        ogtag.image = re.findall(image_pattern, r.text)
+        image = re.findall(image_pattern, r.text)
+
+        if image:
+            ogtag.image = image
+        else:
+            ogtag.image = None
 
         description_pattern = '"og:description" content="(.+?)"'
-        ogtag.description = re.findall(description_pattern, r.text)
+        description = re.findall(description_pattern, r.text)
+
+        if description:
+            ogtag.description = description
+        else:
+            ogtag.description = None
 
         return ogtag
 

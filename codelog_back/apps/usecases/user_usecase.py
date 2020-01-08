@@ -15,6 +15,7 @@ from core.utils import TokenHelper
 class Token:
     token: str = None
     refresh_token: str = None
+    nickname: str = None
 
 
 class UserUsecase:
@@ -83,6 +84,7 @@ class GithubLoginUsecase(UserUsecase):
         return Token(
             token=token.decode('utf8'),
             refresh_token=refresh_token,
+            nickname=nickname,
         )
 
 
