@@ -31,20 +31,19 @@ class GetFeedListUsecase(FeedUsecase):
 
 
 class CreateFeedUsecase(FeedUsecase):
-    def execute(self, url: str, tags: str, auth_header: str) -> FeedEntity:
-        # Check
-        if not auth_header:
-            abort(400, 'token header error')
-
+    def execute(self, url: str, tags: str, payload: dict) -> FeedEntity:
         # Extract payload from token
-        payload = TokenHelper.decode(token=auth_header.split()[1])
-        user = self.user_repo.get_user(user_id=int(payload['user_id']))
+        user = self.user_repo.get_user(user_id=payload['user_id'])
 
         if not user:
             abort(400, 'user does not exist')
 
         # Get og tag info
         og_info = self._parse(url=url)
+
+        # Check tags is valid
+        if self._check_tags(tags=tags) is False:
+            abort(400, 'invalid tag')
 
         # Create feed
         feed = self.feed_repo.create_feed(
@@ -79,6 +78,17 @@ class CreateFeedUsecase(FeedUsecase):
         ogtag.description = re.findall(description_pattern, r.text)
 
         return ogtag
+
+    def _check_tags(self, tags: str) -> bool:
+        tags = tags.split(',')
+        if len(tags) > 4:
+            return False
+
+        for tag in tags:
+            if len(tag) > 20:
+                return False
+
+        return True
 
 
 class GetTagListUsecase(FeedUsecase):

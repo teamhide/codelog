@@ -1,16 +1,10 @@
+from typing import NoReturn, Union
+
 from flask import Blueprint
 from flask import abort
 from flask import request
 from marshmallow.exceptions import ValidationError
 
-from apps.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
-from apps.usecases import (
-    GetFeedListUsecase,
-    CreateFeedUsecase,
-    GetTagListUsecase,
-    SearchFeedUsecase,
-)
-from typing import NoReturn, Union
 from apps.entities import FeedEntity
 from apps.presenters import (
     GetFeedListPresenter,
@@ -18,6 +12,14 @@ from apps.presenters import (
     GetTagListPresenter,
     SearchFeedPresenter,
 )
+from apps.schemas import CreateFeedRequestSchema, SearchFeedRequestSchema
+from apps.usecases import (
+    GetFeedListUsecase,
+    CreateFeedUsecase,
+    GetTagListUsecase,
+    SearchFeedUsecase,
+)
+from core.decorators import is_jwt_authenticated
 
 feed_bp = Blueprint('feeds', __name__, url_prefix='/api/feeds')
 
@@ -29,16 +31,15 @@ def get_feed_list():
 
 
 @feed_bp.route('/', methods=['POST'])
-def create_feed() -> Union[NoReturn, FeedEntity]:
+@is_jwt_authenticated()
+def create_feed(payload: dict) -> Union[NoReturn, FeedEntity]:
     try:
         validator = CreateFeedRequestSchema().load(data=request.form)
-    except ValidationError:
+    except ValidationError as e:
+        print(e)
         abort(400, 'validation error')
 
-    feed = CreateFeedUsecase().execute(
-        **validator,
-        auth_header=request.headers.get('Authorization'),
-    )
+    feed = CreateFeedUsecase().execute(**validator, payload=payload)
 
     return CreateFeedPresenter.transform(response=feed)
 
