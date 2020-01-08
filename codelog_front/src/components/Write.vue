@@ -1,24 +1,48 @@
 <template>
   <div class="write-container">
     <div class="post-url">
-      <textarea placeholder="URL" rows="5"/>
+      <textarea v-model="url" placeholder="URL" rows="5"/>
     </div>
     <div class="post-tags">
-      <input type="text" placeholder="Tags" />
+      <input v-model="tags" type="text" placeholder="Tags" />
     </div>
-    <div class="post-write">
+    <div v-on:click="write" class="post-write">
       POST
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Write',
+  data() {
+    return {
+      url: '',
+      tags: '',
+    }
+  },
   created() {
     if (!this.$store.state.token) {
       alert('Login first');
       history.back();
+    }
+  },
+  methods: {
+    write() {
+      var params = new URLSearchParams();
+      params.append('url', this.url);
+      params.append('tags', this.tags);
+      axios.post('http://localhost:8000/api/feeds/', params, {
+          headers: { Authorization: 'Bearer '+ this.$store.state.token }
+        })
+        .then((res) => {
+          window.location.replace('/');
+        })
+        .catch((err) => {
+          alert(err);
+        });
     }
   }
 }

@@ -23,7 +23,7 @@
             {{ feed.title.length < 28 ? feed.title : feed.title.substr(0, 28) + "..." }}
           </div>
           <div class="feed-description">
-            {{ feed.description.length < 26 ? feed.description : feed.description.substr(0, 26) + "..." }}
+            {{ feed.description.length < 26 ? feed.description : feed.description.substr(0, 23) + "..." }}
           </div>
           <div class="feed-url">
             {{ feed.url.length < 28 ? feed.url : feed.url.substr(0, 28) + "..." }}

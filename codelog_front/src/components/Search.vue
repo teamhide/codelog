@@ -2,8 +2,8 @@
   <div class="search-container">
     <input v-model="keyword" v-on:keyup.enter="searchFeeds" type="text" class="search-bar" placeholder="검색어를 입력하세요."/>
     <FeedDetail :feeds="feeds"></FeedDetail>
-    <div v-if="!this.feeds" class="search-result">검색 결과가 없습니다.</div>
-    <div v-if="this.isRemain && this.prev" class="load-feed">
+    <div v-if="this.feeds.length == 0 && this.isRemain == false" class="search-result">검색 결과가 없습니다.</div>
+    <div v-if="this.isRemain == true && this.prev" class="load-feed">
       <a v-on:click="loadMore">Load more</a>
     </div>
   </div>
@@ -46,27 +46,36 @@ export default {
       return data;
     },
     async searchFeeds() {
+      this.prev = null;
+      this.isRemain = false;
+
       if (this.keyword.length <= 1) {
         alert("검색어는 2글자 이상이어야 합니다.");
         return
       }
+
       this.feeds = await this.getFeeds();
+      if (this.feeds.length == 0) {
+        this.isRemain = false;
+        return
+      }
+
       this.prev = this.feeds[this.feeds.length - 1].id;
       if (this.feeds && this.feeds.length > 0) {
         this.isRemain = true;
       }
     },
     async loadMore() {
-      this.prev = this.feeds[this.feeds.length - 1].id
-      var data = await this.getFeeds();
+      var feeds = await this.getFeeds();
 
-      if (data.length > 0) {
-        data.forEach((value, index) => {
+      if (feeds.length > 0) {
+        feeds.forEach((value, index) => {
           this.feeds.push(value);
         })
         this.isRemain = true;
       } else {
         this.isRemain = false;
+        this.prev = null;
       }
     }
   }
