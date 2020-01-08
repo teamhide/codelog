@@ -2,7 +2,8 @@
   <div class="search-container">
     <input v-model="keyword" v-on:keyup.enter="searchFeeds" type="text" class="search-bar" placeholder="검색어를 입력하세요."/>
     <FeedDetail :feeds="feeds"></FeedDetail>
-    <div v-if="this.isRemain" class="load-feed">
+    <div v-if="!this.feeds" class="search-result">검색 결과가 없습니다.</div>
+    <div v-if="this.isRemain && this.prev" class="load-feed">
       <a v-on:click="loadMore">Load more</a>
     </div>
   </div>
@@ -19,8 +20,8 @@ export default {
   },
   data() {
     return {
-      feeds: null,
-      keyword: null,
+      feeds: [],
+      keyword: '',
       prev: null,
       isRemain: false,
     }
@@ -39,14 +40,19 @@ export default {
           data = res.data;
         })
         .catch((err) => {
-          alert("검색어는 2글자 이상이어야 합니다.");
+          alert(err);
         });
 
       return data;
     },
     async searchFeeds() {
+      if (this.keyword.length <= 1) {
+        alert("검색어는 2글자 이상이어야 합니다.");
+        return
+      }
       this.feeds = await this.getFeeds();
-      if (this.feeds.length > 0) {
+      this.prev = this.feeds[this.feeds.length - 1].id;
+      if (this.feeds && this.feeds.length > 0) {
         this.isRemain = true;
       }
     },
@@ -80,6 +86,12 @@ export default {
   border-radius: 20px;
   width: 90%;
   max-width: 960px;
+}
+.search-result {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 100;
 }
 .load-feed {
   margin-top: 15px;
