@@ -15,6 +15,12 @@
 <script>
 export default {
   name: 'Write',
+  created() {
+    if (!this.$store.state.token) {
+      alert('Login first');
+      history.back();
+    }
+  }
 }
 </script>
 

@@ -7,8 +7,11 @@
       <div class="header-top-center">
         <router-link to="/">Codelog</router-link>
       </div>
-      <div class="header-top-right">
-        <img v-on:click="getCode" src="../assets/login-icon.png" width="35" height="35" />
+      <div v-if="!$store.state.token" class="header-top-right">
+        <img v-on:click="getCode" src="../assets/login-icon.png" width="32" height="32" />
+      </div>
+      <div v-else class="header-top-right">
+        <img v-on:click="logOut" src="../assets/logout-icon.svg" width="28" height="25" />
       </div>
     </div>
     <div class="header-bottom">
@@ -28,6 +31,11 @@ export default {
   methods: {
     getCode() {
       window.location.replace('https://github.com/login/oauth/authorize?client_id=86eb568f5e9a72afbe01&redirect_uri=http://localhost:8080/login&scope=read:user')
+    },
+    logOut() {
+      this.$store.commit('deleteToken');
+      this.$store.commit('deleteRefreshToken');
+      window.location.replace('/');
     }
   }
 }
