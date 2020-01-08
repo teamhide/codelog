@@ -7,6 +7,7 @@ export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
     refreshToken: localStorage.getItem('refreshToken'),
+    nickname: localStorage.getItem('nickname'),
   },
   mutations: {
     getToken(state) {
@@ -22,7 +23,14 @@ export const store = new Vuex.Store({
     deleteRefreshToken(state) {
       localStorage.removeItem('refreshToken');
       state.refreshToken = null;
-    }
+    },
+    getNickname(state) {
+      state.nickname = localStorage.getItem('nickname');
+    },
+    deleteNickname(state) {
+      localStorage.removeItem('nickname');
+      state.nickname = null;
+    },
   },
   actions: {
     

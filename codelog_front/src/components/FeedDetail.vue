@@ -5,28 +5,41 @@
         <div class="feed-top">
           <div class="feed-top-left">
             <div class="feed-writer">
-              {{ feed.nickname.length < 20 ? feed.nickname : feed.nickname.substr(0, 20) + "..." }}
+              {{ feed.nickname !== null && feed.nickname.length < 20 ? feed.nickname : feed.nickname.substr(0, 20) + "..." }}
             </div>
             <div class="feed-date">
               {{ feed.created_at }}
             </div>
           </div>
-          <div class="feed-top-right">
+          <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right">
             <div class="feed-top-btn"></div>
           </div>
         </div>
         <div class="feed-image">
-          <a :href="''+feed.url+''" target="_blank"><img :src="''+feed.image+''" width="100%" height="100%" style="background-size: cover; background-position: center;" /></a>
+          <template v-if="feed.image !== null">
+            <a :href="''+feed.url+''" target="_blank"><img :src="''+feed.image+''" width="100%" height="100%" style="background-size: cover; background-position: center;" /></a>
+          </template>
+          <template v-else>
+            <img src="../assets/no-image.jpg" width="100%" height="100%" style="background-size: cover; background-position: center;" />
+          </template>
         </div>
         <div class="feed-body">
-          <div class="feed-title">
-            {{ feed.title.length < 28 ? feed.title : feed.title.substr(0, 28) + "..." }}
+          <div class="feed-title"> 
+              {{
+                feed.title !== null ?
+                feed.title.length < 25 ? feed.title : feed.title.substr(0, 25) : 
+                "No title"
+               }}
           </div>
           <div class="feed-description">
-            {{ feed.description.length < 26 ? feed.description : feed.description.substr(0, 23) + "..." }}
+            {{
+              feed.description !== null ?
+              feed.description !== null && feed.description.length < 21 ? feed.description : feed.description.substr(0, 21) + "..." :
+              "No description"
+            }}
           </div>
           <div class="feed-url">
-            {{ feed.url.length < 28 ? feed.url : feed.url.substr(0, 28) + "..." }}
+            <a :href="''+feed.url+''" target="_blank">{{ feed.url.length < 35 ? feed.url : feed.url.substr(0, 35) + "..." }}</a>
           </div>
         </div>
       </div>
@@ -93,6 +106,9 @@ export default {
 }
 .feed-url {
   font-size: 13px;
+}
+.feed-url a {
+  text-decoration: none;
 }
 .feed-body {
   padding: 10px;

@@ -22,6 +22,7 @@ export default {
           .then((res) => {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('refreshToken', res.data.refresh_token);
+            localStorage.setItem('nickname', res.data.nickname);
             window.location.replace('/');
           })
           .catch((err) => {

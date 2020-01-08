@@ -3,7 +3,9 @@
     <Header />
     <Section />
     <Footer />
-    <router-link to="/write" class="write-btn"></router-link>
+    <div v-if="$store.state.token">
+      <router-link to="/write" class="write-btn"></router-link>
+    </div>
   </div>
 </template>
 
