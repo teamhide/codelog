@@ -4,15 +4,15 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class OAuthConfig:
-    google_client_id: str = os.getenv('google_client_id')
-    google_client_secret: str = os.getenv('google_client_secret')
-    google_redirect_uri: str = os.getenv('google_redirect_uri')
-    kakao_client_id: str = os.getenv('kakao_client_id')
-    kakao_client_secret: str = os.getenv('kakao_client_secret')
-    kakao_redirect_uri: str = os.getenv('kakao_redirect_uri')
-    github_client_id: str = os.getenv('github_client_id')
-    github_client_secret: str = os.getenv('github_client_secret')
-    github_redirect_uri: str = os.getenv('github_redirect_uri')
+    google_client_id: str = os.getenv('GOOGLE_CLIENT_ID')
+    google_client_secret: str = os.getenv('GOOGLE_CLIENT_SECRET')
+    google_redirect_uri: str = os.getenv('GOOGLE_REDIRECT_URI')
+    kakao_client_id: str = os.getenv('KAKAO_CLIENT_ID')
+    kakao_client_secret: str = os.getenv('KAKAO_CLIENT_SECRET')
+    kakao_redirect_uri: str = os.getenv('KAKAO_REDIRECT_URI')
+    github_client_id: str = os.getenv('GITHUB_CLIENT_ID')
+    github_client_secret: str = os.getenv('GITHUB_CLIENT_SECRET')
+    github_redirect_uri: str = os.getenv('GITHUB_REDIRECT_URI')
 
 
 @dataclass(frozen=True)
