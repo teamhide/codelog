@@ -79,7 +79,10 @@ class GithubLoginUsecase(UserUsecase):
                 avatar_url=avatar_url,
             )
 
-        token = TokenHelper.encode(payload={'user_id': user.id})
+        token = TokenHelper.encode(
+            payload={'user_id': user.id},
+            expire_period=3600,
+        )
 
         return Token(
             token=token.decode('utf8'),
@@ -139,3 +142,17 @@ class GoogleLoginUsecase(UserUsecase):
 class KakaoLoginUsecase(UserUsecase):
     def execute(self, code: str) -> Union[Token, abort]:
         pass
+
+
+class RefreshTokenUsecase(UserUsecase):
+    def execute(self, token: str, refresh_token: str) -> Union[Token, abort]:
+        token = TokenHelper.decode(token=token)
+        TokenHelper.decode(token=refresh_token)
+
+        new_token = TokenHelper.encode(
+            payload={'user_id': token['user_id']},
+            expire_period=3600,
+        )
+        new_refresh_token = self._create_refresh_token()
+
+        return Token(token=new_token, refresh_token=new_refresh_token)

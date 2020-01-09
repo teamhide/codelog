@@ -36,7 +36,6 @@ def create_feed(payload: dict) -> Union[NoReturn, FeedEntity]:
     try:
         validator = CreateFeedRequestSchema().load(data=request.form)
     except ValidationError as e:
-        print(e)
         abort(400, 'validation error')
 
     feed = CreateFeedUsecase().execute(**validator, payload=payload)
