@@ -146,13 +146,23 @@ class KakaoLoginUsecase(UserUsecase):
 
 class RefreshTokenUsecase(UserUsecase):
     def execute(self, token: str, refresh_token: str) -> Union[Token, abort]:
-        token = TokenHelper.decode(token=token)
-        TokenHelper.decode(token=refresh_token)
+        payload = TokenHelper.decode(token=token)
+        stored_refresh_token = self.user_repo.get_user(
+            user_id=payload['user_id'],
+        )
+
+        if stored_refresh_token != refresh_token:
+            abort(401, 'invalid refresh token')
 
         new_token = TokenHelper.encode(
-            payload={'user_id': token['user_id']},
+            payload={'user_id': payload['user_id']},
             expire_period=3600,
         )
         new_refresh_token = self._create_refresh_token()
+
+        self.user_repo.update_token(
+            user_id=payload['user_id'],
+            refresh_token=new_refresh_token,
+        )
 
         return Token(token=new_token, refresh_token=new_refresh_token)

@@ -36,8 +36,9 @@ class UserRepo:
     @abc.abstractmethod
     def update_token(
         self,
-        email: str,
-        login_type: str,
+        user_id: int = None,
+        email: str = None,
+        login_type: str = None,
         access_token: str = None,
         refresh_token: str = None,
     ) -> Union[UserEntity, abort]:
@@ -101,15 +102,23 @@ class UserMySQLRepo(UserRepo):
 
     def update_token(
         self,
-        email: str,
-        login_type: str,
+        user_id: int = None,
+        email: str = None,
+        login_type: str = None,
         access_token: str = None,
         refresh_token: str = None,
     ) -> Union[UserEntity, abort]:
-        user = session.query(User).filter(
-            User.email == email,
-            User.login_type == login_type,
-        ).first()
+        query = session.query(User)
+        if user_id:
+            query = query.filter(User.id == user_id)
+
+        if email and login_type:
+            query = query.filter(
+                User.email == email,
+                User.login_type == login_type,
+            )
+
+        user = query.first()
 
         if not access_token and not refresh_token:
             abort(500, 'access_token and refresh_token is empty')
