@@ -26,11 +26,13 @@
 </template>
 
 <script>
+import { Endpoint } from '../enum'
+
 export default {
   name: 'Header',
   methods: {
     getCode() {
-      window.location.replace('https://github.com/login/oauth/authorize?client_id=86eb568f5e9a72afbe01&redirect_uri=http://localhost:8080/login&scope=read:user')
+      window.location.replace(`https://github.com/login/oauth/authorize?client_id=86eb568f5e9a72afbe01&redirect_uri=http://codelog.kr/login&scope=read:user`)
     },
     logOut() {
       this.$store.commit('deleteToken');
