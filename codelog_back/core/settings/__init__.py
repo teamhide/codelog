@@ -17,18 +17,15 @@ class OAuthConfig:
 
 @dataclass(frozen=True)
 class Config:
-    env: str
+    env: str = os.getenv('ENV')
     debug: bool = os.getenv('DEBUG', True)
     app_host: str = os.getenv('APP_HOST', '0.0.0.0')
-    app_port: int = os.getenv('APP_PORT', 5000)
+    app_port: int = os.getenv('APP_PORT', 8000)
     db_user: str = os.getenv('DB_USER', 'codelog')
     db_pass: str = os.getenv('DB_PASS', 'codelog')
     db_host: str = os.getenv('DB_HOST', 'localhost')
     db_name: str = os.getenv('DB_NAME', 'codelog')
-    db_url: str = os.getenv(
-        'DB_URL',
-        f'mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}',
-    )
+    db_url: str = f'mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}'
     jwt_secret_key = os.getenv('JWT_SECRET_KEY', 'codelog')
     jwt_algorithm = 'HS256'
     request_headers = {
@@ -60,7 +57,7 @@ class ProductionConfig(Config):
 
 
 def get_config():
-    env = os.getenv('env', 'development')
+    env = os.getenv('ENV', 'development')
     config_type = {
         'development': DevelopmentConfig,
         'testing': TestingConfig,
