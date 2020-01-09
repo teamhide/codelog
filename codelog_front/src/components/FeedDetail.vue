@@ -5,7 +5,7 @@
         <div class="feed-top">
           <div class="feed-top-left">
             <div class="feed-writer">
-              {{ feed.nickname !== null && feed.nickname.length < 20 ? feed.nickname : feed.nickname.substr(0, 20) + "..." }}
+              {{ feed.nickname !== null && getBufferSize(feed.nickname) < 20 ? feed.nickname : feed.nickname.substr(0, 20) + "..." }}
             </div>
             <div class="feed-date">
               {{ feed.created_at }}
@@ -28,22 +28,22 @@
           </template>
         </div>
         <div class="feed-body">
-          <div class="feed-title"> 
+          <div class="feed-title">
               {{
                 feed.title !== null ?
-                feed.title.length < 25 ? feed.title : feed.title.substr(0, 25) : 
+                getBufferSize(feed.title) < 22 ? feed.title : feed.title.substr(0, 22) : 
                 "No title"
                }}
           </div>
           <div class="feed-description">
             {{
               feed.description !== null ?
-              feed.description !== null && feed.description.length < 21 ? feed.description : feed.description.substr(0, 21) + "..." :
+              getBufferSize(feed.description) < 21 ? feed.description : feed.description.substr(0, 21) + "..." :
               "No description"
             }}
           </div>
           <div class="feed-url">
-            <a :href="''+feed.url+''" target="_blank">{{ feed.url.length < 35 ? feed.url : feed.url.substr(0, 35) + "..." }}</a>
+            <a :href="''+feed.url+''" target="_blank">{{ getBufferSize(feed.url) < 32 ? feed.url : feed.url.substr(0, 32) + "..." }}</a>
           </div>
         </div>
       </div>
@@ -58,6 +58,10 @@ export default {
         feeds: Array
     },
     methods: {
+      getBufferSize(str) {
+        var b = str.match("/[^\x00-\xff]/g");
+        return (str.length + (!b ? 0: b.length)); 
+      },
       myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
       },

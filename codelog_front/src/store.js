@@ -9,30 +9,41 @@ export const store = new Vuex.Store({
     refreshToken: localStorage.getItem('refreshToken'),
     nickname: localStorage.getItem('nickname'),
   },
-  mutations: {
+  getters: {
     getToken(state) {
-      state.token = localStorage.getItem('token');
+      return state.token;
     },
+    getRefreshToken(state) {
+      return state.refreshToken;
+    },
+    getNickname(state) {
+      return state.nickname;
+    },
+  },
+  mutations: {
     deleteToken(state) {
       localStorage.removeItem('token');
       state.token = null;
-    },
-    getRefreshToken(state) {
-      state.refreshToken = localStorage.getItem('refreshToken');
     },
     deleteRefreshToken(state) {
       localStorage.removeItem('refreshToken');
       state.refreshToken = null;
     },
-    getNickname(state) {
-      state.nickname = localStorage.getItem('nickname');
-    },
     deleteNickname(state) {
       localStorage.removeItem('nickname');
       state.nickname = null;
     },
+    setToken(state, token) {
+      localStorage.setItem('token', token);
+      state.token = token;
+    },
+    setRefreshToken(state, refreshToken) {
+      localStorage.setItem('refresh_token', refreshToken);
+      state.refreshToken = refreshToken;
+    },
+    setNickname(state, nickname) {
+      localStorage.setItem('nickname', nickname);
+      state.nickname = nickname;
+    }
   },
-  actions: {
-    
-  }
 })

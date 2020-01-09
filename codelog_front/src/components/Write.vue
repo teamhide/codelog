@@ -22,13 +22,25 @@ export default {
     return {
       url: '',
       tags: '',
+      failCount: 0,
     }
   },
   created() {
-    if (!this.$store.state.token) {
+    if (!this.$store.getters.getToken) {
       alert('로그인이 필요한 기능입니다.');
       history.back();
     }
+
+    var params = new URLSearchParams();
+    params.append('token', this.$store.getters.getToken);
+    axios.post(`${Endpoint.URL}/oauth/verify_token`, params)
+    .catch((err) => {
+      console.log(err.response);
+      this.$store.commit('deleteToken');
+      this.$store.commit('deleteRefreshToken');
+      this.$store.commit('deleteNickname');
+      window.location.replace('/');
+    });
   },
   methods: {
     lockInput(flag) {
@@ -36,23 +48,29 @@ export default {
       document.getElementById("post-tags").disabled = flag;
     },
     write() {
-      if (this.url.length == 0 || this.tags.length == 0) {
+      if (this.url.length == 0 && this.tags.length == 0) {
         alert('URL/Tag를 채워주세요.');
+      } else if (this.url.length == 0) {
+        alert('URL을 채워주세요.');
       }
       this.lockInput(true);
+
       var params = new URLSearchParams();
       params.append('url', this.url);
       params.append('tags', this.tags);
+
       axios.post(`${Endpoint.URL}/api/feeds/`, params, {
-          headers: { Authorization: 'Bearer '+ this.$store.state.token }
-        })
-        .then((res) => {
-          window.location.replace('/');
-        })
-        .catch((err) => {
-          this.lockInput(false);
-          alert('글쓰기 실패');
-        });
+        headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
+      })
+      .then((res) => {
+        window.location.replace('/');
+      })
+      .catch((err) => {
+        this.lockInput(false);
+        alert('글쓰기 실패');
+        console.log(err.response)
+        // window.location.replace('/');
+      });
     }
   }
 }

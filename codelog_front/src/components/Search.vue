@@ -73,7 +73,7 @@ export default {
         feeds.forEach((value, index) => {
           this.feeds.push(value);
         })
-        this.isRemain = true;
+        this.isRemain = feeds.length > 12 ? true : false;
       } else {
         this.isRemain = false;
         this.prev = null;

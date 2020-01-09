@@ -27,7 +27,7 @@ export default {
   async mounted() {
     this.feeds = await this.getFeeds();
 
-    if (this.feeds.length > 0) {
+    if (this.feeds.length > 12) {
       this.isRemain = true;
     }
   },
@@ -58,7 +58,7 @@ export default {
         data.forEach((value, index) => {
           this.feeds.push(value);
         })
-        this.isRemain = true;
+        this.isRemain = data.length > 10 ? true : false;
       } else {
         this.isRemain = false;
       }
