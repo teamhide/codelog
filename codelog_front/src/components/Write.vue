@@ -4,7 +4,7 @@
       <textarea v-model="url" placeholder="URL" rows="5"/>
     </div>
     <div class="post-tags">
-      <input v-model="tags" type="text" placeholder="Tags" />
+      <input v-model="tags" type="text" placeholder="Tags (Maximum 3)" />
     </div>
     <div v-on:click="write" class="post-write">
       POST
@@ -55,12 +55,22 @@ export default {
   justify-items: center;
   align-items: center;
 }
+.post-url {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+}
+.post-tags {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+}
 .post-url textarea {
   border: none;
   font-size: 20px;
-  padding: 15px;
-  min-width: 410px;
-  max-width: 900px;
+  padding: 8px;
+  width: 100%;
+  max-width: 800px;
   margin-top: 20px;
   margin-bottom: 20px;
   resize: none;
@@ -70,18 +80,21 @@ export default {
 .post-tags input {
   border: none;
   font-size: 20px;
-  min-width: 410px;
-  padding: 15px;
+  width: 100%;
+  max-width: 800px;
+  padding: 8px;
   border-radius: 10px;
   font-weight: 200;
 }
 .post-write {
+  display: grid;
+  width: 100%;
+  max-width: 800px;
   margin-top: 20px;
-  padding: 20px;
+  padding: 8px;
   background-color: #6196ff;
   color: white;
   font-weight: 600;
-  width: 400px;
   cursor: pointer;
   border-radius: 10px;
   text-align: center;
