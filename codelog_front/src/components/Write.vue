@@ -1,7 +1,7 @@
 <template>
   <div class="write-container">
     <div class="post-url">
-      <textarea id="post-url" v-model="url" placeholder="URL" rows="5"/>
+      <textarea id="post-url" v-model="url" placeholder="http://" rows="5"/>
     </div>
     <div class="post-tags">
       <input id="post-tags" v-model="tags" type="text" placeholder="Tags (Maximum 3)" />
@@ -49,9 +49,14 @@ export default {
     },
     write() {
       if (this.url.length == 0 && this.tags.length == 0) {
-        alert('URL/Tag를 채워주세요.');
-      } else if (this.url.length == 0) {
-        alert('URL을 채워주세요.');
+        alert('URL/Tag를 입력해주세요.');
+        return
+      } else if (this.url.length < 10) {
+        alert('유효한 URL을 입력해주세요.');
+        return
+      } else if (!this.url.startsWith('http://') && !this.url.startsWith('https://')) {
+        alert('http:// 또는 https://로 시작하는 주소를 입력해주세요.');
+        return
       }
       this.lockInput(true);
 
@@ -68,8 +73,7 @@ export default {
       .catch((err) => {
         this.lockInput(false);
         alert('글쓰기 실패');
-        console.log(err.response)
-        // window.location.replace('/');
+        window.location.replace('/');
       });
     }
   }
