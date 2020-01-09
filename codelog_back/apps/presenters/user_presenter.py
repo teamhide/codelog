@@ -15,3 +15,9 @@ class RefreshTokenPresenter(Presenter):
     @classmethod
     def transform(cls, response: Token) -> jsonify:
         return jsonify(RefreshTokenSchema().dump(response))
+
+
+class VerifyTokenPresenter(Presenter):
+    @classmethod
+    def transform(cls, response) -> jsonify:
+        return jsonify({'status': response})

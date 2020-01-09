@@ -3,12 +3,11 @@ from dataclasses import dataclass
 from typing import List
 
 import requests
-from flask import abort
 
 from apps.entities import FeedEntity
 from apps.repositories import FeedMySQLRepo, UserMySQLRepo
+from core.exceptions import abort
 from core.settings import get_config
-from core.utils import TokenHelper
 
 
 @dataclass
@@ -36,14 +35,15 @@ class CreateFeedUsecase(FeedUsecase):
         user = self.user_repo.get_user(user_id=payload['user_id'])
 
         if not user:
-            abort(400, 'user does not exist')
+
+            abort(400, error='user does not exist')
 
         # Get og tag info
         og_info = self._parse(url=url)
 
         # Check tags is valid
         if self._check_tags(tags=tags) is False:
-            abort(400, 'invalid tag')
+            abort(400, error='invalid tag')
 
         # Create feed
         feed = self.feed_repo.create_feed(
@@ -64,7 +64,7 @@ class CreateFeedUsecase(FeedUsecase):
                 requests.exceptions.ConnectionError,
                 requests.exceptions.MissingSchema,
         ):
-            abort(400, 'incorrect url')
+            abort(400, error='incorrect url')
 
         ogtag = OGTag()
 

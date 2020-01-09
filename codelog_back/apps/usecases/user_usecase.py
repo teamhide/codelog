@@ -1,12 +1,12 @@
 import re
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, NoReturn
 
 import requests
-from flask import abort
 
 from apps.enums import LoginType
 from apps.repositories import UserMySQLRepo
+from core.exceptions import abort
 from core.settings import OAuthConfig
 from core.utils import TokenHelper
 
@@ -45,7 +45,7 @@ class GithubLoginUsecase(UserUsecase):
         try:
             github_access_token = re.findall(pattern, response.text)[0]
         except IndexError:
-            abort(400, 'get access token error')
+            abort(400, error='get access token error')
 
         response = requests.get(
             url='https://api.github.com/user',
@@ -58,7 +58,7 @@ class GithubLoginUsecase(UserUsecase):
         email = response.get('email')
 
         if not email:
-            abort(400, 'email required')
+            abort(400, error='email required')
 
         user = self.user_repo.get_user(email=email, login_type='github')
         refresh_token = self._create_refresh_token()
@@ -66,6 +66,7 @@ class GithubLoginUsecase(UserUsecase):
         if user:
             self.user_repo.update_token(
                 access_token=github_access_token,
+                refresh_token=refresh_token,
                 email=email,
                 login_type='github',
             )
@@ -81,7 +82,7 @@ class GithubLoginUsecase(UserUsecase):
 
         token = TokenHelper.encode(
             payload={'user_id': user.id},
-            expire_period=3600,
+            expire_period=86400,
         )
 
         return Token(
@@ -107,7 +108,7 @@ class GoogleLoginUsecase(UserUsecase):
         id_token = response.json().get('id_token')
 
         if not google_access_token or not id_token:
-            abort(400, 'get token error')
+            abort(400, error='get token error')
 
         response = requests.get(
             url=f'https://oauth2.googleapis.com/tokeninfo?id_token={id_token}'
@@ -115,7 +116,7 @@ class GoogleLoginUsecase(UserUsecase):
         email = response.json().get('email')
 
         if not email:
-            abort(400, 'email required')
+            abort(400, error='email required')
 
         user = self.user_repo.get_user(
             email=email,
@@ -146,17 +147,17 @@ class KakaoLoginUsecase(UserUsecase):
 
 class RefreshTokenUsecase(UserUsecase):
     def execute(self, token: str, refresh_token: str) -> Union[Token, abort]:
-        payload = TokenHelper.decode(token=token)
-        stored_refresh_token = self.user_repo.get_user(
+        payload = TokenHelper.decode_expired_token(token=token)
+        user = self.user_repo.get_user(
             user_id=payload['user_id'],
         )
 
-        if stored_refresh_token != refresh_token:
-            abort(401, 'invalid refresh token')
+        if user.refresh_token != refresh_token:
+            abort(401, error='invalid refresh token')
 
         new_token = TokenHelper.encode(
             payload={'user_id': payload['user_id']},
-            expire_period=3600,
+            expire_period=172800,
         )
         new_refresh_token = self._create_refresh_token()
 
@@ -166,3 +167,9 @@ class RefreshTokenUsecase(UserUsecase):
         )
 
         return Token(token=new_token, refresh_token=new_refresh_token)
+
+
+class VerifyTokenUsecase(UserUsecase):
+    def execute(self, token: str) -> Union[bool, NoReturn]:
+        TokenHelper.decode(token=token)
+        return True

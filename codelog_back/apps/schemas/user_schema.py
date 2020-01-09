@@ -19,3 +19,7 @@ class OAuthLoginResponseSchema(Schema):
 class RefreshTokenSchema(Schema):
     token = fields.String(required=True)
     refresh_token = fields.String(required=True)
+
+
+class VerityTokenRequestSchema(Schema):
+    token = fields.String(required=True)

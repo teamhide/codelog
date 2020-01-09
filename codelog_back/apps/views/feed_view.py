@@ -1,7 +1,6 @@
 from typing import NoReturn, Union
 
 from flask import Blueprint
-from flask import abort
 from flask import request
 from marshmallow.exceptions import ValidationError
 
@@ -20,6 +19,7 @@ from apps.usecases import (
     SearchFeedUsecase,
 )
 from core.decorators import is_jwt_authenticated
+from core.exceptions import abort
 
 feed_bp = Blueprint('feeds', __name__, url_prefix='/api/feeds')
 
@@ -35,8 +35,8 @@ def get_feed_list():
 def create_feed(payload: dict) -> Union[NoReturn, FeedEntity]:
     try:
         validator = CreateFeedRequestSchema().load(data=request.form)
-    except ValidationError as e:
-        abort(400, 'validation error')
+    except ValidationError:
+        abort(400, error='validation error')
 
     feed = CreateFeedUsecase().execute(**validator, payload=payload)
 
@@ -54,7 +54,7 @@ def search_feed():
     try:
         validator = SearchFeedRequestSchema().load(data=request.args)
     except ValidationError:
-        abort(400, 'validation error')
+        abort(400, error='validation error')
 
     feeds = SearchFeedUsecase().execute(**validator)
 

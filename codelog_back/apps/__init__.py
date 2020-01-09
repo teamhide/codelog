@@ -1,8 +1,11 @@
+import sentry_sdk
 from flask import Flask
+from flask_cors import CORS
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from apps.views import feed_bp, user_bp, oauth_bp, home_bp
 from core.databases import session
-from flask_cors import CORS
+from core.settings import get_config
 
 
 def init_listeners(app: Flask):
@@ -25,6 +28,14 @@ def init_blueprint(app: Flask):
 
 def init_extensions(app: Flask):
     CORS(app)
+    sentry_sdk.init(
+        dsn=get_config().sentry_dsn,
+        integrations=[FlaskIntegration()]
+    )
+
+    @app.route('/debug-sentry')
+    def trigger_error():
+        division_by_zero = 1 / 0
 
 
 def create_app():

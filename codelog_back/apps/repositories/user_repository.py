@@ -2,11 +2,10 @@ import abc
 from typing import Optional
 from typing import Union
 
-from flask import abort
-
 from apps.entities import UserEntity
 from apps.models import User
 from core.databases import session
+from core.exceptions import abort
 
 
 class UserRepo:
@@ -87,7 +86,7 @@ class UserMySQLRepo(UserRepo):
         )
 
         if not access_token and refresh_token:
-            abort(500, 'access_token and refresh_token is empty')
+            abort(500, error='access_token and refresh_token is empty')
 
         if access_token:
             user.access_token = access_token
@@ -121,7 +120,7 @@ class UserMySQLRepo(UserRepo):
         user = query.first()
 
         if not access_token and not refresh_token:
-            abort(500, 'access_token and refresh_token is empty')
+            abort(500, error='access_token and refresh_token is empty')
 
         if access_token:
             user.access_token = access_token

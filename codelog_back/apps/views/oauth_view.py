@@ -1,14 +1,24 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request
 from marshmallow import ValidationError
 
-from apps.presenters import OAuthLoginPresenter, RefreshTokenPresenter
-from apps.schemas import OAuthLoginRequestSchema, RefreshTokenSchema
+from apps.presenters import (
+    OAuthLoginPresenter,
+    RefreshTokenPresenter,
+    VerifyTokenPresenter,
+)
+from apps.schemas import (
+    OAuthLoginRequestSchema,
+    RefreshTokenSchema,
+    VerityTokenRequestSchema,
+)
 from apps.usecases import (
     GithubLoginUsecase,
     GoogleLoginUsecase,
     KakaoLoginUsecase,
     RefreshTokenUsecase,
+    VerifyTokenUsecase,
 )
+from core.exceptions import abort
 
 oauth_bp = Blueprint('oauth', __name__, url_prefix='/oauth')
 
@@ -18,7 +28,7 @@ def github_login():
     try:
         validator = OAuthLoginRequestSchema().load(data=request.args)
     except ValidationError:
-        abort(400, 'invalid code')
+        abort(400, error='validation error')
 
     token = GithubLoginUsecase().execute(**validator)
     return OAuthLoginPresenter.transform(response=token)
@@ -41,7 +51,18 @@ def refresh_token():
     try:
         validator = RefreshTokenSchema().load(data=request.form)
     except ValidationError:
-        abort(400, 'invalid token')
+        abort(400, error='validation error')
 
     token = RefreshTokenUsecase().execute(**validator)
     return RefreshTokenPresenter.transform(response=token)
+
+
+@oauth_bp.route('/verify_token', methods=['POST'])
+def verify_token():
+    try:
+        validator = VerityTokenRequestSchema().load(data=request.form)
+    except ValidationError:
+        abort(400, error='validation error')
+
+    if VerifyTokenUsecase().execute(**validator):
+        return VerifyTokenPresenter.transform(response=True)
