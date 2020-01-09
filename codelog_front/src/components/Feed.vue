@@ -10,6 +10,7 @@
 <script>
 import axios from 'axios'
 import FeedDetail from './FeedDetail.vue'
+import { Endpoint } from '../enum'
 
 export default {
   name: 'Feed',
@@ -32,7 +33,7 @@ export default {
   },
   methods: {
     async getFeeds() {
-      var url = 'http://127.0.0.1:8000/api/feeds/';
+      var url = `${Endpoint.URL}/api/feeds/`
       let data;
 
       if(this.prev) {
@@ -44,7 +45,7 @@ export default {
           data = res.data;
         })
         .catch((err) => {
-          alert("err");
+          
         });
 
       return data;

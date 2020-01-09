@@ -12,11 +12,11 @@
             </div>
           </div>
           <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right">
-            <button v-on:click="myFunction" class="feed-top-btn"></button>
+            <!-- <button v-on:click="myFunction" class="feed-top-btn"></button>
               <div id="myDropdown" class="dropdown-content">
                 <a href="#">Modify</a>
                 <a href="#">Delete</a>
-              </div>
+              </div> -->
           </div>
         </div>
         <div class="feed-image">

@@ -14,6 +14,7 @@
 
 <script>
 import axios from 'axios'
+import { Endpoint } from '../enum'
 
 export default {
   name: 'Write',
@@ -25,7 +26,7 @@ export default {
   },
   created() {
     if (!this.$store.state.token) {
-      alert('Login first');
+      alert('로그인이 필요한 기능입니다.');
       history.back();
     }
   },
@@ -34,14 +35,14 @@ export default {
       var params = new URLSearchParams();
       params.append('url', this.url);
       params.append('tags', this.tags);
-      axios.post('http://localhost:8000/api/feeds/', params, {
+      axios.post(`${Endpoint.URL}/api/feeds/`, params, {
           headers: { Authorization: 'Bearer '+ this.$store.state.token }
         })
         .then((res) => {
           window.location.replace('/');
         })
         .catch((err) => {
-          alert(err);
+          alert('글쓰기 실패');
         });
     }
   }

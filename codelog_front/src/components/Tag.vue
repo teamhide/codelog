@@ -10,6 +10,7 @@
 
 <script>
 import axios from 'axios'
+import { Endpoint } from '../enum'
 
 export default {
   name: 'Tag',
@@ -23,12 +24,12 @@ export default {
   },
   methods: {
     getTags() {
-      axios.get('http://127.0.0.1:8000/api/feeds/tags/')
+      axios.get(`${Endpoint.URL}/api/feeds/tags/`)
         .then((res) => {
           this.tags = res.data;
         })
         .catch((err) => {
-          alert(err)
+          
         })
     }
   }

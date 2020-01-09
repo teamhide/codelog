@@ -4,6 +4,7 @@
 
 <script>
 import axios from 'axios'
+import { Endpoint } from '../enum'
 
 export default {
     name: 'Login',
@@ -18,7 +19,7 @@ export default {
     },
     methods: {
       getToken() {
-        axios.get('http://localhost:8000/oauth/github/login?code=' + this.code)
+        axios.get(`${Endpoint.URL}/oauth/github/login?code=${this.code}`)
           .then((res) => {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('refreshToken', res.data.refresh_token);
