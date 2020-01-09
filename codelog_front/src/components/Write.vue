@@ -1,10 +1,10 @@
 <template>
   <div class="write-container">
     <div class="post-url">
-      <textarea v-model="url" placeholder="URL" rows="5"/>
+      <textarea id="post-url" v-model="url" placeholder="URL" rows="5"/>
     </div>
     <div class="post-tags">
-      <input v-model="tags" type="text" placeholder="Tags (Maximum 3)" />
+      <input id="post-tags" v-model="tags" type="text" placeholder="Tags (Maximum 3)" />
     </div>
     <div v-on:click="write" class="post-write">
       POST
@@ -31,7 +31,15 @@ export default {
     }
   },
   methods: {
+    lockInput(flag) {
+      document.getElementById("post-url").disabled = flag;
+      document.getElementById("post-tags").disabled = flag;
+    },
     write() {
+      if (this.url.length == 0 || this.tags.length == 0) {
+        alert('URL/Tag를 채워주세요.');
+      }
+      this.lockInput(true);
       var params = new URLSearchParams();
       params.append('url', this.url);
       params.append('tags', this.tags);
@@ -42,6 +50,7 @@ export default {
           window.location.replace('/');
         })
         .catch((err) => {
+          this.lockInput(false);
           alert('글쓰기 실패');
         });
     }
