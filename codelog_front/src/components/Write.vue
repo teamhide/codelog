@@ -35,7 +35,6 @@ export default {
     params.append('token', this.$store.getters.getToken);
     axios.post(`${Endpoint.URL}/oauth/verify_token`, params)
     .catch((err) => {
-      console.log(err.response);
       this.$store.commit('deleteToken');
       this.$store.commit('deleteRefreshToken');
       this.$store.commit('deleteNickname');
@@ -72,10 +71,10 @@ export default {
       axios.post(`${Endpoint.URL}/api/feeds/`, params, {
         headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
       })
-      .then((res) => {
+      .then(() => {
         window.location.replace('/');
       })
-      .catch((err) => {
+      .catch(() => {
         this.lockInput(false);
         alert('글쓰기 실패');
         window.location.replace('/');

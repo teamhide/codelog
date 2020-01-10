@@ -11,14 +11,8 @@
               {{ feed.created_at }}
             </div>
           </div>
-          <!-- <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right"> -->
-          <div class="feed-top-right">
+          <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right">
             <div class="feed-top-btn" v-on:click="deleteFeed(feed.id)"></div>
-            <!-- <button v-on:click="myFunction" class="feed-top-btn"></button>
-              <div id="myDropdown" class="dropdown-content">
-                <a href="#">Modify</a>
-                <a href="#">Delete</a>
-              </div> -->
           </div>
         </div>
         <div class="feed-image">
