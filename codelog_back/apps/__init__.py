@@ -2,6 +2,7 @@ import sentry_sdk
 from flask import Flask
 from flask_cors import CORS
 from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from apps.views import feed_bp, user_bp, oauth_bp, home_bp
 from core.databases import session
@@ -30,7 +31,7 @@ def init_extensions(app: Flask):
     CORS(app)
     sentry_sdk.init(
         dsn=get_config().sentry_dsn,
-        integrations=[FlaskIntegration()]
+        integrations=[FlaskIntegration(), SqlalchemyIntegration()]
     )
 
     @app.route('/debug-sentry')

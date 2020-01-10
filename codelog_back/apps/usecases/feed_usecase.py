@@ -52,9 +52,9 @@ class CreateFeedUsecase(FeedUsecase):
             user_id=user.id,
             url=url,
             tags=tags[:3],
-            image=og_info.image if og_info.image.startswith('http') else None,
-            title=og_info.title[:50],
-            description=og_info.description[:50],
+            image=og_info.image,
+            title=og_info.title,
+            description=og_info.description,
         )
 
         return feed
@@ -71,26 +71,26 @@ class CreateFeedUsecase(FeedUsecase):
         ogtag = OGTag()
 
         title_pattern = '"og:title" content="(.+?)"'
-        title = re.findall(title_pattern, r.text)[0]
+        title = re.findall(title_pattern, r.text)
 
         if title:
-            ogtag.title = title
+            ogtag.title = title[:50]
         else:
             ogtag.title = None
 
         image_pattern = '"og:image" content="(.+?)"'
-        image = re.findall(image_pattern, r.text)[0]
+        image = re.findall(image_pattern, r.text)
 
-        if image:
+        if image and image[0].startswith('http'):
             ogtag.image = image
         else:
             ogtag.image = None
 
         description_pattern = '"og:description" content="(.+?)"'
-        description = re.findall(description_pattern, r.text)[0]
+        description = re.findall(description_pattern, r.text)
 
         if description:
-            ogtag.description = description
+            ogtag.description = description[:50]
         else:
             ogtag.description = None
 
