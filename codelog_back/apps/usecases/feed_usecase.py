@@ -52,7 +52,7 @@ class CreateFeedUsecase(FeedUsecase):
             user_id=user.id,
             url=url,
             tags=tags[:3],
-            image=og_info.image,
+            image=og_info.image if og_info.image.startswith('http') else None,
             title=og_info.title[:50],
             description=og_info.description[:50],
         )
