@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 import requests
 
@@ -35,24 +35,26 @@ class CreateFeedUsecase(FeedUsecase):
         user = self.user_repo.get_user(user_id=payload['user_id'])
 
         if not user:
-
             abort(400, error='user does not exist')
 
         # Get og tag info
         og_info = self._parse(url=url)
 
         # Check tags is valid
-        if self._check_tags(tags=tags) is False:
+        if self._process_tags(tags=tags) is False:
             abort(400, error='invalid tag')
+
+        # Process tags
+        tags = self._process_tags(tags=tags)
 
         # Create feed
         feed = self.feed_repo.create_feed(
             user_id=user.id,
             url=url,
-            tags=tags.split(','),
+            tags=tags[:3],
             image=og_info.image,
-            title=og_info.title,
-            description=og_info.description,
+            title=og_info.title[:50],
+            description=og_info.description[:50],
         )
 
         return feed
@@ -69,7 +71,7 @@ class CreateFeedUsecase(FeedUsecase):
         ogtag = OGTag()
 
         title_pattern = '"og:title" content="(.+?)"'
-        title = re.findall(title_pattern, r.text)
+        title = re.findall(title_pattern, r.text)[0]
 
         if title:
             ogtag.title = title
@@ -77,7 +79,7 @@ class CreateFeedUsecase(FeedUsecase):
             ogtag.title = None
 
         image_pattern = '"og:image" content="(.+?)"'
-        image = re.findall(image_pattern, r.text)
+        image = re.findall(image_pattern, r.text)[0]
 
         if image:
             ogtag.image = image
@@ -85,7 +87,7 @@ class CreateFeedUsecase(FeedUsecase):
             ogtag.image = None
 
         description_pattern = '"og:description" content="(.+?)"'
-        description = re.findall(description_pattern, r.text)
+        description = re.findall(description_pattern, r.text)[0]
 
         if description:
             ogtag.description = description
@@ -94,16 +96,17 @@ class CreateFeedUsecase(FeedUsecase):
 
         return ogtag
 
-    def _check_tags(self, tags: str) -> bool:
-        tags = tags.split(',')
-        if len(tags) > 4:
+    def _process_tags(self, tags: str) -> Union[List, bool]:
+        if len(tags) > 100:
             return False
+
+        tags = re.findall('#\w+\s*\w+', tags)
 
         for tag in tags:
             if len(tag) > 20:
                 return False
 
-        return True
+        return tags
 
 
 class GetTagListUsecase(FeedUsecase):
