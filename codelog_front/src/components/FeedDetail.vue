@@ -11,7 +11,9 @@
               {{ feed.created_at }}
             </div>
           </div>
-          <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right">
+          <!-- <div v-if="feed.nickname !== null && $store.state.nickname == feed.nickname" class="feed-top-right"> -->
+          <div class="feed-top-right">
+            <div class="feed-top-btn" v-on:click="deleteFeed(feed.id)"></div>
             <!-- <button v-on:click="myFunction" class="feed-top-btn"></button>
               <div id="myDropdown" class="dropdown-content">
                 <a href="#">Modify</a>
@@ -52,6 +54,9 @@
 </template>
 
 <script>
+import { Endpoint } from '../enum'
+import axios from 'axios'
+
 export default {
     name: 'FeedDetail',
     props: {
@@ -62,9 +67,17 @@ export default {
         var b = str.match("/[^\x00-\xff]/g");
         return (str.length + (!b ? 0: b.length)); 
       },
-      myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-      },
+      deleteFeed(feedId) {
+        axios.delete(`${Endpoint.URL}/api/feeds/${feedId}`, {
+          headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
+        })
+        .then(() => {
+          window.location.replace('/');
+        })
+        .catch(() => {
+          window.location.replace('/');
+        });
+      }
     }
 }
 </script>
@@ -81,6 +94,13 @@ export default {
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 0px white inset, 0 0 3px rgba(0, 0, 0, 0.2);
+  transition-duration: 0.3s;
+}
+.feed:hover
+{
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
 }
 .feed-top {
   display: grid;
@@ -94,46 +114,11 @@ export default {
 .feed-top-btn {
   height: 15px;
   width: 15px;
-  background: url("../assets/menu-icon.svg") no-repeat;
+  background: url("../assets/trash-icon.svg") no-repeat;
   background-size: cover;
   background-position: center;
   border: none;
   cursor: pointer;
-}
-/* Dropdown button on hover & focus */
-.feed-top-btn:hover, .feed-top-btn:focus {
-
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 10px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd}
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {
-  display:block;
 }
 .feed-writer {
   display: grid;

@@ -4,9 +4,9 @@
       <textarea id="post-url" v-model="url" placeholder="http://" rows="5"/>
     </div>
     <div class="post-tags">
-      <input id="post-tags" v-model="tags" type="text" placeholder="#Python #Golang (Maximum 3)" />
+      <input id="post-tags" v-model="tags" type="text" placeholder="#Python (Optional, Maximum 3)" />
     </div>
-    <div v-on:click="write" class="post-write">
+    <div v-on:click="write" class="post-write" id="post-write">
       POST
     </div>
   </div>
@@ -46,6 +46,11 @@ export default {
     lockInput(flag) {
       document.getElementById("post-url").disabled = flag;
       document.getElementById("post-tags").disabled = flag;
+      if (flag === true) {
+        document.getElementById("post-write").style.pointerEvents = 'auto';
+      } else {
+        document.getElementById("post-write").style.pointerEvents = 'none';
+      }
     },
     write() {
       if (this.url.length == 0 && this.tags.length == 0) {
@@ -130,8 +135,6 @@ export default {
   border-radius: 10px;
   text-align: center;
   font-size: 22px;
-}
-.write-btn {
-  display: none;
+  pointer-events: auto;
 }
 </style>

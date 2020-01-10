@@ -44,7 +44,7 @@ export default {
         .then((res) => {
           data = res.data;
         })
-        .catch((err) => {
+        .catch(() => {
           
         });
 
