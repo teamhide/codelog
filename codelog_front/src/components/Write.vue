@@ -4,7 +4,7 @@
       <textarea id="post-url" v-model="url" placeholder="http://" rows="5"/>
     </div>
     <div class="post-tags">
-      <input id="post-tags" v-model="tags" type="text" placeholder="Tags (Maximum 3)" />
+      <input id="post-tags" v-model="tags" type="text" placeholder="#Python #Golang (Maximum 3)" />
     </div>
     <div v-on:click="write" class="post-write">
       POST

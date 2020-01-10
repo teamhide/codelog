@@ -62,7 +62,7 @@ export default {
       }
 
       this.prev = this.feeds[this.feeds.length - 1].id;
-      if (this.feeds && this.feeds.length > 0) {
+      if (this.feeds && this.feeds.length > 10) {
         this.isRemain = true;
       }
     },
