@@ -5,6 +5,7 @@ import Tag from './components/Tag.vue'
 import Search from './components/Search.vue'
 import Write from './components/Write.vue'
 import Login from './components/Login.vue'
+import About from './components/About.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,10 @@ export const router = new VueRouter({
       {
         path: '/login',
         component: Login
+      },
+      {
+        path: '/about',
+        component: About
       },
     ]
   })  

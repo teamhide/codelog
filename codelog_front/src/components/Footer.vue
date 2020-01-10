@@ -1,7 +1,8 @@
 <template>
   <footer>
     <div class="footer">
-      COPYRIGHT Hide, ALL RIGHT RESERVED
+      <span>COPYRIGHT Hide, ALL RIGHT RESERVED</span>
+      <router-link to="/about" class="about">About</router-link>
     </div>
   </footer>
 </template>
@@ -22,5 +23,12 @@ export default {
   align-items: center;
   font-size: 15px;
   font-weight: 100;
+}
+.about {
+  display: grid;
+  justify-items: center;
+  font-weight: 600;
+  text-decoration: none;
+  color: #2971ff;
 }
 </style>

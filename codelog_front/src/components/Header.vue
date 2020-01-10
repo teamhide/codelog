@@ -37,6 +37,7 @@ export default {
     logOut() {
       this.$store.commit('deleteToken');
       this.$store.commit('deleteRefreshToken');
+      this.$store.commit('deleteNickname');
       window.location.replace('/');
     }
   }
