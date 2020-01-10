@@ -1,10 +1,10 @@
 import re
 from dataclasses import dataclass
-from typing import List, Union
+from typing import List, Union, NoReturn
 
 import requests
 
-from apps.entities import FeedEntity
+from apps.entities import FeedEntity, TagEntity
 from apps.repositories import FeedMySQLRepo, UserMySQLRepo
 from core.exceptions import abort
 from core.settings import get_config
@@ -30,7 +30,12 @@ class GetFeedListUsecase(FeedUsecase):
 
 
 class CreateFeedUsecase(FeedUsecase):
-    def execute(self, url: str, tags: str, payload: dict) -> FeedEntity:
+    def execute(
+        self,
+        url: str,
+        tags: str,
+        payload: dict,
+    ) -> Union[FeedEntity, NoReturn]:
         # Extract payload from token
         user = self.user_repo.get_user(user_id=payload['user_id'])
 
@@ -59,7 +64,7 @@ class CreateFeedUsecase(FeedUsecase):
 
         return feed
 
-    def _parse(self, url: str) -> OGTag:
+    def _parse(self, url: str) -> Union[OGTag, NoReturn]:
         try:
             r = requests.get(url=url, headers=get_config().request_headers)
         except (
@@ -110,10 +115,27 @@ class CreateFeedUsecase(FeedUsecase):
 
 
 class GetTagListUsecase(FeedUsecase):
-    def execute(self):
+    def execute(self) -> List[TagEntity]:
         return self.feed_repo.get_tag_list()
 
 
 class SearchFeedUsecase(FeedUsecase):
-    def execute(self, keyword: str, prev: int = None):
+    def execute(self, keyword: str, prev: int = None) -> List[FeedEntity]:
         return self.feed_repo.search_feed(keyword=keyword, prev=prev)
+
+
+class DeleteFeedUsecase(FeedUsecase):
+    def execute(self, payload: dict, feed_id: int) -> Union[NoReturn, bool]:
+        user = self.user_repo.get_user(user_id=payload['user_id'])
+
+        if not user:
+            abort(404, error='user does not exist')
+
+        feed = self.feed_repo.get_feed(feed_id=feed_id)
+
+        if feed.user_id != user.id:
+            abort(401, error='do not have permission')
+
+        self.feed_repo.delete_feed(feed_id=feed_id)
+
+        return True

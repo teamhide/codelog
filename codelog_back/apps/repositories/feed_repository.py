@@ -1,5 +1,5 @@
 import abc
-from typing import List, Union
+from typing import List, Union, Optional
 
 from sqlalchemy import or_
 
@@ -10,6 +10,10 @@ from core.databases import session
 
 class FeedRepo:
     __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def get_feed(self, feed_id: int) -> Optional[FeedEntity]:
+        pass
 
     @abc.abstractmethod
     def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
@@ -43,8 +47,20 @@ class FeedRepo:
     ) -> List[FeedEntity]:
         pass
 
+    @abc.abstractmethod
+    def delete_feed(self, feed_id: int) -> None:
+        pass
+
 
 class FeedMySQLRepo(FeedRepo):
+    def get_feed(self, feed_id: int):
+        feed = session.query(Feed).filter(Feed.id == feed_id).first()
+
+        if not feed:
+            return None
+
+        return feed.to_entity()
+
     def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
         query = session.query(Feed)
 
@@ -131,3 +147,9 @@ class FeedMySQLRepo(FeedRepo):
             feed.to_entity()
             for feed in feeds
         ]
+
+    def delete_feed(self, feed_id: int):
+        feed = session.query(Feed).get(feed_id)
+
+        session.delete(feed)
+        session.commit()
