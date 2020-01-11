@@ -32,6 +32,7 @@ class FeedRepo:
         image: str,
         title: str,
         description: str,
+        is_private: bool,
     ) -> FeedEntity:
         pass
 
@@ -99,6 +100,7 @@ class FeedMySQLRepo(FeedRepo):
         image: str,
         title: str,
         description: str,
+        is_private: bool,
     ) -> FeedEntity:
         feed = Feed(
             user_id=user_id,
@@ -106,7 +108,7 @@ class FeedMySQLRepo(FeedRepo):
             image=image,
             title=title,
             description=description,
-            is_private=True,
+            is_private=is_private,
         )
 
         for tag in tags:

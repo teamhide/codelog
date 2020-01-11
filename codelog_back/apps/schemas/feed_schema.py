@@ -16,6 +16,7 @@ class GetFeedListResponseSchema(Schema):
 class CreateFeedRequestSchema(Schema):
     url = fields.String(required=True)
     tags = fields.String(required=True)
+    is_private = fields.String(required=True)
 
 
 class CreateFeedResponseSchema(Schema):

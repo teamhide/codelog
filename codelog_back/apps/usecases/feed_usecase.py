@@ -43,6 +43,7 @@ class CreateFeedUsecase(FeedUsecase):
         self,
         url: str,
         tags: str,
+        is_private: str,
         payload: dict,
     ) -> Union[FeedEntity, NoReturn]:
         # Extract payload from token
@@ -69,6 +70,7 @@ class CreateFeedUsecase(FeedUsecase):
             image=og_info.image,
             title=og_info.title,
             description=og_info.description,
+            is_private=True if is_private == 'true' else False,
         )
 
         return feed
