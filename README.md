@@ -7,6 +7,6 @@ http://codelog.kr
 
 ### Language
 
-Backend: Python
+[Backend: Python Flask](https://github.com/teamhide/codelog_backend)
 
-Frontend: Vuejs
+[Frontend: Vue.js](https://github.com/teamhide/codelog_frontend)
