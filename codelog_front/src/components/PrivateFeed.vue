@@ -13,7 +13,7 @@ import FeedDetail from './FeedDetail.vue'
 import { Endpoint } from '../enum'
 
 export default {
-  name: 'Feed',
+  name: 'PrivateFeed',
   components: {
     'FeedDetail': FeedDetail,
   },
@@ -23,6 +23,22 @@ export default {
       prev: null,
       isRemain: false,
     }
+  },
+  created() {
+    if (!this.$store.getters.getToken) {
+      alert('로그인이 필요한 기능입니다.');
+      history.back();
+    }
+
+    var params = new URLSearchParams();
+    params.append('token', this.$store.getters.getToken);
+    axios.post(`${Endpoint.URL}/oauth/verify_token`, params)
+    .catch((err) => {
+      this.$store.commit('deleteToken');
+      this.$store.commit('deleteRefreshToken');
+      this.$store.commit('deleteNickname');
+      window.location.replace('/');
+    });
   },
   async mounted() {
     this.feeds = await this.getFeeds();
@@ -39,7 +55,9 @@ export default {
       if (this.prev) {
         url += '?prev=' + this.prev;
       }
-      await axios.get(url)
+      await axios.get(url, this.$store.getters.getToken && {
+        headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
+      })
       .then((res) => {
         data = res.data;
       })
@@ -64,21 +82,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.load-feed {
-  margin-top: 15px;
-  text-align: center;
-}
-.load-feed a {
-  text-decoration: none;
-  color: black;
-  border: 1px solid lightgray;
-  padding: 10px;
-  border-radius: 15px;
-}
-.load-feed a:hover {
-  background-color: #6196ff;
-  color: white;
-}
-</style>

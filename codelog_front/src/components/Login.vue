@@ -24,7 +24,7 @@ export default {
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('refreshToken', res.data.refresh_token);
             localStorage.setItem('nickname', res.data.nickname);
-            window.location.replace('/');
+            window.location.replace('/private');
           })
           .catch((err) => {
             alert("로그인 실패");

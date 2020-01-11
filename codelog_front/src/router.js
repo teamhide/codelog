@@ -6,6 +6,7 @@ import Search from './components/Search.vue'
 import Write from './components/Write.vue'
 import Login from './components/Login.vue'
 import About from './components/About.vue'
+import PrivateFeed from './components/PrivateFeed.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,10 @@ export const router = new VueRouter({
       {
         path: '/about',
         component: About
+      },
+      {
+        path: '/private',
+        component: PrivateFeed
       },
     ]
   })  

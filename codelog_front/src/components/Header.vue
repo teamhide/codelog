@@ -16,10 +16,10 @@
     </div>
     <div class="header-bottom">
       <div class="header-bottom-left">
-        <router-link to="/">Recent</router-link>
+        <router-link to="/private">Private</router-link>
       </div>
       <div class="header-bottom-right">
-        <router-link to="/tags">Tags</router-link>
+        <router-link to="/">All</router-link>
       </div>
     </div>
   </header>
