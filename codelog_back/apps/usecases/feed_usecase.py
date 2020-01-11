@@ -8,6 +8,7 @@ from apps.entities import FeedEntity, TagEntity
 from apps.repositories import FeedMySQLRepo, UserMySQLRepo
 from core.exceptions import abort
 from core.settings import get_config
+from core.utils import TokenHelper
 
 
 @dataclass
@@ -24,8 +25,16 @@ class FeedUsecase:
 
 
 class GetFeedListUsecase(FeedUsecase):
-    def execute(self, prev: int = None) -> List[FeedEntity]:
-        feeds = self.feed_repo.get_feed_list(prev=prev)
+    def execute(self, header: str, prev: int = None) -> List[FeedEntity]:
+        if header:
+            payload = TokenHelper.decode(token=header.split()[1])
+
+            feeds = self.feed_repo.get_feed_list(
+                user_id=payload['user_id'],
+                prev=prev,
+            )
+        else:
+            feeds = self.feed_repo.get_feed_list(prev=prev)
         return feeds
 
 

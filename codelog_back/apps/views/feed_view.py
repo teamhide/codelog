@@ -26,7 +26,11 @@ feed_bp = Blueprint('feeds', __name__, url_prefix='/api/feeds')
 
 @feed_bp.route('/', methods=['GET'])
 def get_feed_list() -> Union[NoReturn, jsonify]:
-    feeds = GetFeedListUsecase().execute(prev=request.args.get('prev'))
+    header = request.headers.get('Authorization')
+    feeds = GetFeedListUsecase().execute(
+        header=header,
+        prev=request.args.get('prev'),
+    )
     return GetFeedListPresenter.transform(response=feeds)
 
 

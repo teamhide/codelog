@@ -16,7 +16,12 @@ class FeedRepo:
         pass
 
     @abc.abstractmethod
-    def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
+    def get_feed_list(
+        self,
+        user_id: int = None,
+        prev: int = None,
+        is_private: bool = None,
+    ) -> List[FeedEntity]:
         pass
 
     @abc.abstractmethod
@@ -61,13 +66,25 @@ class FeedMySQLRepo(FeedRepo):
 
         return feed.to_entity()
 
-    def get_feed_list(self, prev: int = None) -> List[FeedEntity]:
+    def get_feed_list(
+        self,
+        user_id: int = None,
+        prev: int = None,
+        is_private: bool = None,
+    ) -> List[FeedEntity]:
         query = session.query(Feed)
+
+        if user_id:
+            query = query.filter(Feed.user_id == user_id)
 
         if prev:
             query = query.filter(Feed.id < prev)
 
+        if is_private:
+            query = query.filter(Feed.is_private == is_private)
+
         feeds = query.order_by(Feed.id.desc()).limit(10)
+
         return [
             feed.to_entity()
             for feed in feeds
@@ -88,6 +105,7 @@ class FeedMySQLRepo(FeedRepo):
             image=image,
             title=title,
             description=description,
+            is_private=True,
         )
 
         for tag in tags:

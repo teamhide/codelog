@@ -15,6 +15,7 @@ class FeedEntity:
     url: str = None
     user: UserEntity = None
     tags: List = None
+    is_private: bool = None
     created_at: datetime = None
     updated_at: datetime = None
 

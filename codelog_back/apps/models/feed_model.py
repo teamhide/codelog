@@ -5,6 +5,7 @@ from sqlalchemy import (
     Unicode,
     ForeignKey,
     Table,
+    Boolean
 )
 from sqlalchemy.orm import relationship
 
@@ -31,6 +32,7 @@ class Feed(Base, TimestampMixin):
     url = Column(Unicode(255), nullable=False)
     user = relationship('User', uselist=False)
     tags = relationship('Tag', secondary=feed_tag, back_populates='feeds')
+    is_private = Column(Boolean, default=True)
 
     def to_entity(self):
         return FeedEntity(
@@ -45,6 +47,7 @@ class Feed(Base, TimestampMixin):
                 tag.name
                 for tag in self.tags
             ],
+            is_private=self.is_private,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
