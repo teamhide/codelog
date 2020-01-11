@@ -77,7 +77,6 @@ class FeedMySQLRepo(FeedRepo):
         if user_id:
             query = query.filter(
                 Feed.user_id == user_id,
-                Feed.is_private == True,
             )
         else:
             query = query.filter(Feed.is_private == False)
