@@ -10,6 +10,7 @@ jobs:
   build:
     name: CI
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:5.7
@@ -21,16 +22,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
     - name: Setup Python 3.7.5
-    - uses: actions/setup-python@v1
+      uses: actions/setup-python@v1
       with:
         python-version: 3.7.5
 
-#    - name: Install pipenv
-#      run: pip3 install pipenv
-#    - name: Install Dependencies
-#      run: pipenv install --system
-#    - name: Testing
-#      env:
-#        env: testing
-#      run: pytest
+    - name: Install pipenv
+      run: pip3 install pipenv
+
+    - name: Install Dependencies
+      run: pipenv install --system
+
+    - name: Testing
+      env:
+        env: testing
+      run: pytest ./codelog_back
