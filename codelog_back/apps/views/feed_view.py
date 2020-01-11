@@ -60,7 +60,8 @@ def search_feed() -> Union[NoReturn, jsonify]:
     except ValidationError:
         abort(400, error='validation error')
 
-    feeds = SearchFeedUsecase().execute(**validator)
+    header = request.headers.get('Authorization')
+    feeds = SearchFeedUsecase().execute(**validator, header=header)
 
     return SearchFeedPresenter.transform(response=feeds)
 

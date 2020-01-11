@@ -20,7 +20,6 @@ class FeedRepo:
         self,
         user_id: int = None,
         prev: int = None,
-        is_private: bool = None,
     ) -> List[FeedEntity]:
         pass
 
@@ -49,6 +48,7 @@ class FeedRepo:
         self,
         keyword: str,
         prev: int = None,
+        user_id: int = None,
     ) -> List[FeedEntity]:
         pass
 
@@ -70,18 +70,19 @@ class FeedMySQLRepo(FeedRepo):
         self,
         user_id: int = None,
         prev: int = None,
-        is_private: bool = None,
     ) -> List[FeedEntity]:
         query = session.query(Feed)
 
         if user_id:
-            query = query.filter(Feed.user_id == user_id)
+            query = query.filter(
+                Feed.user_id == user_id,
+                Feed.is_private == True,
+            )
+        else:
+            query = query.filter(Feed.is_private == False)
 
         if prev:
             query = query.filter(Feed.id < prev)
-
-        if is_private:
-            query = query.filter(Feed.is_private == is_private)
 
         feeds = query.order_by(Feed.id.desc()).limit(10)
 
@@ -146,11 +147,17 @@ class FeedMySQLRepo(FeedRepo):
         self,
         keyword: str,
         prev: int = None,
+        user_id: int = None,
     ) -> List[FeedEntity]:
         query = session.query(Feed)
 
         if prev:
             query = query.filter(Feed.id < prev)
+
+        if user_id:
+            query = query.filter(Feed.user_id == user_id)
+        else:
+            query = query.filter(Feed.is_private == False)
 
         query = query.filter(
             or_(

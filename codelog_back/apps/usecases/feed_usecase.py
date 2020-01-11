@@ -129,8 +129,22 @@ class GetTagListUsecase(FeedUsecase):
 
 
 class SearchFeedUsecase(FeedUsecase):
-    def execute(self, keyword: str, prev: int = None) -> List[FeedEntity]:
-        return self.feed_repo.search_feed(keyword=keyword, prev=prev)
+    def execute(
+        self,
+        header: str,
+        keyword: str,
+        prev: int = None,
+    ) -> List[FeedEntity]:
+        if header:
+            payload = TokenHelper.decode(token=header.split()[1])
+            feeds = self.feed_repo.search_feed(
+                keyword=keyword,
+                prev=prev,
+                user_id=payload['user_id'],
+            )
+        else:
+            feeds = self.feed_repo.search_feed(keyword=keyword, prev=prev)
+        return feeds
 
 
 class DeleteFeedUsecase(FeedUsecase):
