@@ -36,17 +36,17 @@ export default {
       var url = `${Endpoint.URL}/api/feeds/`
       let data;
 
-      if(this.prev) {
+      if (this.prev) {
         url += '?prev=' + this.prev;
       }
-
-      await axios.get(url)
-        .then((res) => {
-          data = res.data;
-        })
-        .catch(() => {
-          
-        });
+      await axios.get(url, this.$store.getters.getToken && {
+        headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
+      })
+      .then((res) => {
+        data = res.data;
+      })
+      .catch(() => {
+      });
 
       return data;
     },

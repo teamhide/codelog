@@ -32,17 +32,16 @@ export default {
       var url = `${Endpoint.URL}/api/feeds/search?keyword=${this.keyword}`
       let data;
 
-      if(this.prev) {
+      if (this.prev) {
         url += '&prev=' + this.prev
       }
-      
-      await axios.get(url)
+
+      await axios.get(url, this.$store.getters.getToken && {
+          headers: { Authorization: 'Bearer '+ this.$store.getters.getToken }
+        })
         .then((res) => {
           data = res.data;
         })
-        .catch((err) => {
-          
-        });
 
       return data;
     },
